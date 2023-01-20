@@ -1,0 +1,33 @@
+// * Основаны на antd https://ant.design/components/grid#col
+
+@mixin media-breakpoint-down($size) {
+  @if $size==xl {
+    @media (max-width: 1600px) {
+      @content;
+    }
+  }
+
+  @else if $size==lg {
+    @media (max-width: 1200px) {
+      @content;
+    }
+  }
+
+  @else if $size==md {
+    @media (max-width: 992px) {
+      @content;
+    }
+  }
+
+  @else if $size==sm {
+    @media (max-width: 768px) {
+      @content;
+    }
+  }
+
+  @else if $size==xs {
+    @media (max-width: 576px) {
+      @content;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "[scss]": {
+    "editor.defaultFormatter": "michelemelluso.code-beautifier",
+    "editor.tabSize": 2
+  },
+  "editor.formatOnSave": true,
+  "typescript.tsdk": "node_modules\\typescript\\lib"
+}

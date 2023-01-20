@@ -1,0 +1,24 @@
+{
+  "recommendations": [
+    // * Prettier | ESLint | React Snippets
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "dsznajder.es7-react-js-snippets",
+
+    // * Дефолтный форматер для css
+    "michelemelluso.code-beautifier",
+
+    // * Code Spell Checker проверка кода на орфографические ошибки
+    "streetsidesoftware.code-spell-checker",
+    "streetsidesoftware.code-spell-checker-russian",
+
+    // * Сортировка по алфавиту строк или свойств объектов
+    "ue.alphabetical-sorter",
+
+    // * Авто переименование html тегов
+    "formulahendry.auto-rename-tag",
+
+    // * Красивые комментарии
+    "aaron-bond.better-comments"
+  ]
+}

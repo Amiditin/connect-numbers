@@ -1,0 +1,45 @@
+{
+  "usesTypeScript": true,
+  "usesCssModule": true,
+  "cssPreprocessor": "scss",
+  "testLibrary": "Testing Library",
+  "component": {
+    "default": {
+      "customTemplates": {
+        "component": "templates/default/index.tsx",
+        "style": "templates/default/TemplateName.module.scss"
+      },
+      "path": "src/components",
+      "withStyle": true,
+      "withTest": false,
+      "withStory": false,
+      "withLazy": false
+    },
+    "page": {
+      "customTemplates": {
+        "component": "templates/default/index.tsx",
+        "style": "templates/default/TemplateName.module.scss"
+      },
+      "path": "src/pages",
+      "withStyle": true,
+      "withTest": false,
+      "withStory": false,
+      "withLazy": false
+    },
+    "redux": {
+      "customTemplates": {
+        "slice": "templates/redux/slice.ts",
+        "types": "templates/redux/types.ts",
+        "index": "templates/redux/index.ts"
+      },
+      "path": "src/redux",
+      "withStyle": false,
+      "withTest": false,
+      "withStory": false,
+      "withLazy": false,
+      "withSlice": true,
+      "withTypes": true,
+      "withIndex": true
+    }
+  }
+}
