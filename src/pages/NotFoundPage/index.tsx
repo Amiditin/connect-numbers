@@ -3,9 +3,9 @@ import { Button, Result } from 'antd';
 
 import { routes } from '@/router/routes';
 
-import styles from './NotFound.module.scss';
+import styles from './NotFoundPage.module.scss';
 
-export const NotFound: React.FC = () => {
+export const NotFoundPage: React.FC = () => {
   return (
     <div className={styles.notFound}>
       <Result

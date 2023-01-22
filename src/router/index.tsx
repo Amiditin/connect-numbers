@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import { MainLayout, MainErrorBoundary } from '@/layouts';
-import { Home, NotFound } from '@/pages';
+import { HomePage, NotFoundPage } from '@/pages';
 import { routes } from './routes';
 
 export const router = createBrowserRouter([
@@ -10,8 +10,14 @@ export const router = createBrowserRouter([
     element: <MainLayout />,
     errorElement: <MainErrorBoundary />,
     children: [
-      { index: true, element: <Home /> },
-      { path: routes.notFound, element: <NotFound /> },
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: routes.notFound,
+        element: <NotFoundPage />,
+      },
     ],
   },
 ]);
