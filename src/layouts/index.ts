@@ -1,2 +1,2 @@
-export * from './MainErrorBoundary';
+export * from './AuthLayout';
 export * from './MainLayout';

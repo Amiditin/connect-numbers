@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
-import { getDataRequest } from '@/services/dataService';
+import { getDataRequest } from '@/shared/services/dataService';
 
 export const getData = createAsyncThunk<any[]>('slice/getData', async () => {
   try {

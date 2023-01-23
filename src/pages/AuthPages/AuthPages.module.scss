@@ -1,0 +1,49 @@
+@import '/src/shared/scss/_variables.scss';
+
+
+.container {
+  width: 100%;
+
+  .title {
+    text-align: center;
+  }
+
+  :global(.ant-form-item-label label) {
+    font-size: 22px !important;
+
+    svg {
+      font-size: 16px;
+      margin-left: 5px;
+      margin-top: 3px;
+    }
+  }
+
+  .space {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .prefixOutlined {
+    opacity: 0.4;
+    margin-right: 5px;
+  }
+
+
+  .remember {
+    margin-bottom: 0;
+  }
+
+  .button {
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  .button_link {
+    padding: 0;
+  }
+
+  .back {
+    margin-left: calc(100% - 85px);
+  }
+}
