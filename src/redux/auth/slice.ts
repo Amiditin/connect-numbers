@@ -7,6 +7,11 @@ const initialState: IAuthState = {
   isAuth: false,
 };
 
+const devInitialState: IAuthState = {
+  user: { email: 'dev@email.com' },
+  isAuth: true,
+};
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,

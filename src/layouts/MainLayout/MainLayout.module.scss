@@ -1,0 +1,19 @@
+@import '/src/shared/scss/_variables.scss';
+
+.sider {
+  overflow: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.menu {
+  margin-top: 20px;
+}
+
+.content {
+  margin: 0 16px;
+  min-height: 100vh;
+}

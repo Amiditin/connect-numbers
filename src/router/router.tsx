@@ -1,7 +1,14 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import { MainLayout, MainErrorBoundary, AuthLayout } from '@/layouts';
-import { HomePage, NotFoundPage, LoginPage, RegisterPage, ForgotPasswordPage } from '@/pages';
+import {
+  HomePage,
+  NotFoundPage,
+  LoginPage,
+  RegisterPage,
+  ForgotPasswordPage,
+  ProfilePage,
+} from '@/pages';
 import { routes } from './routes';
 
 export const router = createBrowserRouter([
@@ -17,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: routes.notFound,
         element: <NotFoundPage />,
+      },
+      {
+        path: routes.profile,
+        element: <ProfilePage />,
       },
     ],
   },
