@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 
+import { routes } from './routes';
 import { MainLayout, MainErrorBoundary, AuthLayout } from '@/layouts';
 import {
   HomePage,
@@ -8,8 +9,8 @@ import {
   RegisterPage,
   ForgotPasswordPage,
   ProfilePage,
+  PatientsPage,
 } from '@/pages';
-import { routes } from './routes';
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: routes.profile,
         element: <ProfilePage />,
+      },
+      {
+        path: routes.patients,
+        element: <PatientsPage />,
       },
     ],
   },

@@ -1,0 +1,42 @@
+@import '/src/shared/scss/_variables.scss';
+
+.patients {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  .space {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px !important;
+    width: 100%;
+  }
+
+  .title {
+    margin-bottom: 0;
+
+    @media (max-width: 440px) {
+      .line_icon {
+        display: none;
+      }
+    }
+  }
+
+  .line_icon {
+    margin-right: 8px;
+    transform: translateY(3px);
+  }
+
+  .btn_add {
+    width: 230px;
+  }
+
+  .table {
+
+    th,
+    td {
+      vertical-align: middle;
+
+    }
+  }
+}

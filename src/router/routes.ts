@@ -3,6 +3,7 @@ export const routes = {
   home: '/',
   notFound: '*',
   profile: '/profile',
+  patients: '/patients',
 
   auth: {
     root: '/auth',

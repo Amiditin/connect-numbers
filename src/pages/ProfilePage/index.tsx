@@ -11,7 +11,7 @@ export const ProfilePage: React.FC = () => {
       <div className={styles.full_name}>
         <Avatar className={styles.avatar} size={64} icon={<UserOutlined />} />
         <Space size="small" direction="vertical">
-          <h3>Давид Антонио Иванович</h3>
+          <h3>Давид Антонио Иванович 3З</h3>
           <h4>davidvilcao@gmail.com +79221110500 </h4>
         </Space>
       </div>

@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Navigate, Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-router-dom';
-import { Layout, Menu, type MenuProps } from 'antd';
-import { UserOutlined, HomeOutlined } from '@ant-design/icons';
+import { Breadcrumb, Layout, Menu, type MenuProps } from 'antd';
+import { UserOutlined, HomeOutlined, TeamOutlined } from '@ant-design/icons';
 
 import { useAppSelector } from '@/shared/hooks';
 import { routes } from '@/router';
@@ -11,7 +11,23 @@ import styles from './MainLayout.module.scss';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-const { Content, Sider } = Layout;
+interface IBreadcrumbItem {
+  label: string;
+  icon: JSX.Element;
+}
+
+const { Content, Header } = Layout;
+
+const breadcrumbMap: Partial<Record<string, IBreadcrumbItem>> = {
+  profile: {
+    label: 'Профиль',
+    icon: <UserOutlined />,
+  },
+  patients: {
+    label: 'Пациенты',
+    icon: <TeamOutlined />,
+  },
+};
 
 export const MainLayout: React.FC = () => {
   const isAuthUser = useAppSelector(getIsAuth);
@@ -22,45 +38,71 @@ export const MainLayout: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const [collapsed, setCollapsed] = useState(false);
 
   const menuItems: MenuItem[] = useMemo(
     () => [
       {
-        label: 'Главная',
-        key: 'home',
-        icon: <HomeOutlined />,
-        onClick: () => navigate(routes.home),
-      },
-      {
         label: 'Профиль',
         key: 'profile',
-        icon: <UserOutlined />,
         onClick: () => navigate(routes.profile),
+      },
+      {
+        label: 'Пациенты',
+        key: 'patients',
+        onClick: () => navigate(routes.patients),
       },
     ],
     [],
   );
 
+  const renderBreadcrumbItemContent = (): React.ReactNode => {
+    const curPathname = location.pathname.slice(1);
+
+    for (const key in breadcrumbMap) {
+      if (key === curPathname) {
+        return (
+          <>
+            {breadcrumbMap[key]?.icon}
+            <span>{breadcrumbMap[key]?.label}</span>
+          </>
+        );
+      }
+    }
+
+    return null;
+  };
+
   return (
     <Layout>
-      <Sider
-        className={styles.sider}
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}>
-        <Menu
-          className={styles.menu}
-          theme="dark"
-          selectedKeys={[location.pathname.slice(1) || 'home']}
-          mode="inline"
-          items={menuItems}
-        />
-      </Sider>
-      <Content className={styles.content}>
-        <Outlet />
-        <ScrollRestoration />
-      </Content>
+      <Header className={styles.header}>
+        <div className={styles.header_content}>
+          <img
+            className={styles.logo}
+            src="/src/shared/assets/images/logo.svg"
+            alt="Logo"
+            onClick={() => navigate(routes.home)}
+          />
+          <Menu
+            className={styles.menu}
+            theme="dark"
+            mode="horizontal"
+            selectedKeys={[location.pathname.slice(1)]}
+            items={menuItems}
+          />
+        </div>
+      </Header>
+      <Layout className={styles.layout}>
+        <Breadcrumb>
+          <Breadcrumb.Item>
+            <HomeOutlined onClick={() => navigate(routes.home)} />
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>{renderBreadcrumbItemContent()}</Breadcrumb.Item>
+        </Breadcrumb>
+        <Content className={styles.content}>
+          <Outlet />
+          <ScrollRestoration />
+        </Content>
+      </Layout>
     </Layout>
   );
 };

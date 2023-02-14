@@ -1,19 +1,62 @@
 @import '/src/shared/scss/_variables.scss';
+@import '/src/shared/scss/_mixins.scss';
 
-.sider {
-  overflow: auto;
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
+
+.header {
+  padding-inline: 0 !important;
+
+  .header_content {
+    display: flex;
+    width: 100%;
+    max-width: 1290px;
+    margin: 0 auto;
+    padding: 0 24px;
+
+    @include media-breakpoint-down(xs) {
+      padding: 0 12px;
+    }
+  }
+
+  .logo {
+    margin-right: 40px;
+    cursor: pointer;
+  }
+
+  .menu {
+    width: 100%;
+    overflow: auto;
+
+    @media (max-width: 361px) {
+      :global(.ant-menu-overflow-item) {
+        margin-left: auto;
+      }
+    }
+  }
+
 }
 
-.menu {
-  margin-top: 20px;
-}
 
-.content {
-  margin: 0 16px;
-  min-height: 100vh;
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 1290px;
+  min-height: calc(100vh - 64px);
+  margin: 0 auto;
+  padding: 24px;
+
+  @include media-breakpoint-down(xs) {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .content {
+    padding: 24px;
+    background-color: white;
+
+    @include media-breakpoint-down(xs) {
+      padding: 24px 12px;
+    }
+  }
 }

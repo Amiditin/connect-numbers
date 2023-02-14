@@ -4,4 +4,10 @@ import type { ConfigProviderProps } from 'antd/es/config-provider';
 
 export const configProviderProps: ConfigProviderProps = {
   locale: ru_RU,
+  theme: {
+    token: {
+      fontSize: 16,
+      colorPrimary: '#2F54EB',
+    },
+  },
 };
