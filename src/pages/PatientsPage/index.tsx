@@ -9,11 +9,13 @@ import {
 } from '@ant-design/icons';
 import { Button, Dropdown, type MenuProps, Space, Table, Typography, Popconfirm } from 'antd';
 
+import React, { useState } from 'react';
 import { devData, IDevDataItem } from './constants';
 
 import type { ColumnsType } from 'antd/es/table';
 
 import styles from './PatientsPage.module.scss';
+import { ModalAddPatient } from '@/components';
 
 const { Title } = Typography;
 
@@ -91,6 +93,18 @@ const columns: ColumnsType<IDevDataItem> = [
 ];
 
 export const PatientsPage: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   return (
     <main className={styles.patients}>
       <Space className={styles.space} wrap>
@@ -98,7 +112,12 @@ export const PatientsPage: React.FC = () => {
           <LineOutlined className={styles.line_icon} />
           Список пациентов
         </Title>
-        <Button className={styles.btn_add} type="primary" size="large" icon={<PlusOutlined />}>
+        <Button
+          className={styles.btn_add}
+          onClick={() => setIsModalOpen(true)}
+          type="primary"
+          size="large"
+          icon={<PlusOutlined />}>
           Добавить пациента
         </Button>
       </Space>
@@ -110,6 +129,7 @@ export const PatientsPage: React.FC = () => {
         rowKey={(record) => record.id}
         scroll={{ x: 740, y: 670 }}
       />
+      <ModalAddPatient isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleCancel} />
     </main>
   );
 };
