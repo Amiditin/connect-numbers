@@ -1,5 +1,13 @@
-import { LineOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Space, Table, Typography } from 'antd';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ExperimentOutlined,
+  LineOutlined,
+  MoreOutlined,
+  PlusOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
+import { Button, Dropdown, type MenuProps, Space, Table, Typography, Popconfirm } from 'antd';
 
 import { devData, IDevDataItem } from './constants';
 
@@ -9,16 +17,45 @@ import styles from './PatientsPage.module.scss';
 
 const { Title } = Typography;
 
+const actions: MenuProps['items'] = [
+  {
+    key: '1',
+    label: <>Назначить тест</>,
+    icon: <ExperimentOutlined />,
+  },
+  {
+    key: '2',
+    label: <>Редактировать</>,
+    icon: <EditOutlined />,
+  },
+  {
+    key: '3',
+    danger: true,
+    label: (
+      <Popconfirm
+        title="Удалить пациента"
+        description="Вы уверены, что хотите удалить эту запись?"
+        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
+        Удалить
+      </Popconfirm>
+    ),
+    icon: <DeleteOutlined />,
+  },
+];
+
 const columns: ColumnsType<IDevDataItem> = [
   {
     title: 'Фамилия Имя Отчество',
     dataIndex: 'fullname',
     key: 'fullname',
+    width: '300px',
   },
   {
     title: 'Возраст',
     dataIndex: 'dateBirth',
     key: 'dateBirth',
+    width: '120px',
+    sorter: true,
     render: (_, record) => {
       // Todo переписать когда будет бек
       const dateArr = record.dateBirth.split('.').map(Number);
@@ -29,19 +66,27 @@ const columns: ColumnsType<IDevDataItem> = [
     },
   },
   {
-    title: 'Дата теста',
+    title: 'Последний тест',
     dataIndex: 'dateLastTest',
+    width: '170px',
     key: 'dateLastTest',
-  },
-  {
-    title: 'Город',
-    dataIndex: 'city',
-    key: 'city',
   },
   {
     title: 'Вид спорта',
     dataIndex: 'sport',
     key: 'sport',
+    width: '250px',
+  },
+  {
+    className: styles.actions,
+    key: 'more',
+    width: '66px',
+    fixed: 'right',
+    render: (_, record) => (
+      <Dropdown menu={{ items: actions }}>
+        <MoreOutlined className={styles.more_icon} rotate={90} />
+      </Dropdown>
+    ),
   },
 ];
 
@@ -58,12 +103,12 @@ export const PatientsPage: React.FC = () => {
         </Button>
       </Space>
       <Table
-        dataSource={devData}
         className={styles.table}
+        dataSource={devData}
         columns={columns}
         pagination={{ showSizeChanger: true }}
         rowKey={(record) => record.id}
-        scroll={{ x: 810 }}
+        scroll={{ x: 740, y: 670 }}
       />
     </main>
   );
