@@ -1,3 +1,5 @@
+import { useRef, useState } from 'react';
+import { Button, Dropdown, Space, Table, Typography, Popconfirm, Input, DatePicker } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -6,38 +8,45 @@ import {
   MoreOutlined,
   PlusOutlined,
   QuestionCircleOutlined,
+  SearchOutlined,
 } from '@ant-design/icons';
-import { Button, Dropdown, type MenuProps, Space, Table, Typography, Popconfirm } from 'antd';
+import localeRU from 'antd/es/date-picker/locale/ru_RU';
 
-import React, { useState } from 'react';
-import { devData, IDevDataItem } from './constants';
+import { ModalAddPatient } from '@/components';
+import { typesSports } from '@/shared/constants/typesSports';
+import { devData, type IDevDataItem } from './constants';
 
+import type { InputRef, MenuProps } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 import styles from './PatientsPage.module.scss';
-import { ModalAddPatient } from '@/components';
+
+const dateRu = new Intl.DateTimeFormat();
 
 const { Title } = Typography;
 
 const actions: MenuProps['items'] = [
+  {
+    key: '2',
+    label: <>Страничка</>,
+    icon: <EditOutlined />,
+  },
   {
     key: '1',
     label: <>Назначить тест</>,
     icon: <ExperimentOutlined />,
   },
   {
-    key: '2',
-    label: <>Редактировать</>,
-    icon: <EditOutlined />,
-  },
-  {
     key: '3',
     danger: true,
     label: (
       <Popconfirm
-        title="Удалить пациента"
-        description="Вы уверены, что хотите удалить эту запись?"
-        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
+        title="Удалить этого пациента?"
+        okText="Удалить"
+        okType="danger"
+        placement="top"
+        showArrow={false}
+        icon={<QuestionCircleOutlined style={{ color: '#ff4d4f' }} />}>
         Удалить
       </Popconfirm>
     ),
@@ -45,66 +54,117 @@ const actions: MenuProps['items'] = [
   },
 ];
 
-const columns: ColumnsType<IDevDataItem> = [
-  {
-    title: 'Фамилия Имя Отчество',
-    dataIndex: 'fullname',
-    key: 'fullname',
-    width: '300px',
-  },
-  {
-    title: 'Возраст',
-    dataIndex: 'dateBirth',
-    key: 'dateBirth',
-    width: '120px',
-    sorter: true,
-    render: (_, record) => {
-      // Todo переписать когда будет бек
-      const dateArr = record.dateBirth.split('.').map(Number);
-      const dateBirth = new Date(dateArr[2], dateArr[1], dateArr[0]).getTime();
-      const curDate = new Date().getTime();
-
-      return ((curDate - dateBirth) / (24 * 3600 * 365.25 * 1000)) | 0;
-    },
-  },
-  {
-    title: 'Последний тест',
-    dataIndex: 'dateLastTest',
-    width: '170px',
-    key: 'dateLastTest',
-  },
-  {
-    title: 'Вид спорта',
-    dataIndex: 'sport',
-    key: 'sport',
-    width: '250px',
-  },
-  {
-    className: styles.actions,
-    key: 'more',
-    width: '66px',
-    fixed: 'right',
-    render: (_, record) => (
-      <Dropdown menu={{ items: actions }}>
-        <MoreOutlined className={styles.more_icon} rotate={90} />
-      </Dropdown>
-    ),
-  },
-];
-
 export const PatientsPage: React.FC = () => {
+  console.log(localeRU.monthFormat);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+  const searchInput = useRef<InputRef>(null);
 
   const handleOk = () => {
     setIsModalOpen(false);
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  const columns: ColumnsType<IDevDataItem> = [
+    {
+      title: 'Фамилия Имя Отчество',
+      dataIndex: 'fullname',
+      key: 'fullname',
+      width: '300px',
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div className={styles.filter_search} onKeyDown={(e) => e.stopPropagation()}>
+          <Input
+            className={styles.input}
+            ref={searchInput}
+            allowClear
+            value={selectedKeys[0]}
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => confirm()}
+          />
+          <div className={styles.buttons}>
+            <Button
+              className={styles.button}
+              type="primary"
+              size="small"
+              icon={<SearchOutlined />}
+              onClick={() => confirm()}>
+              Поиск
+            </Button>
+            <Button
+              className={styles.button}
+              size="small"
+              onClick={() => (clearFilters && clearFilters()) || confirm()}>
+              Сбросить
+            </Button>
+          </div>
+        </div>
+      ),
+      filterIcon: (filtered: boolean) => {
+        return <SearchOutlined className={filtered ? styles.search_icon_filtered : ''} />;
+      },
+      onFilter: (value, record) => {
+        return record.fullname.toLowerCase().includes((value as string).toLowerCase());
+      },
+      onFilterDropdownOpenChange: (visible) => {
+        if (visible) {
+          setTimeout(() => searchInput.current?.select(), 100);
+        }
+      },
+    },
+    {
+      title: 'Пол',
+      dataIndex: 'gender',
+      key: 'gender',
+      width: '80px',
+      filters: [
+        { text: 'Мужской', value: 'male' },
+        { text: 'Женский', value: 'female' },
+      ],
+      onFilter: (value, record) => record.gender.indexOf(value as string) === 0,
+      render: (value: string) => (value === 'male' ? 'Муж' : 'Жен'),
+    },
+    {
+      title: 'Возраст',
+      dataIndex: 'dateBirth',
+      key: 'dateBirth',
+      width: '120px',
+      sorter: (a, b) => (Date.parse(a.dateBirth) < Date.parse(b.dateBirth) ? -1 : 1),
+      render: (_, record) => {
+        const dateBirth = new Date(record.dateBirth).getTime();
+        const curDate = new Date().getTime();
+
+        return ((curDate - dateBirth) / (24 * 3600 * 365.25 * 1000)) | 0;
+      },
+    },
+    // Фильтр поиск + сорт по умолчанию новейшими
+    {
+      title: 'Последний тест',
+      dataIndex: 'dateLastTest',
+      width: '170px',
+      key: 'dateLastTest',
+      sorter: (a, b) => (Date.parse(a.dateLastTest) < Date.parse(b.dateLastTest) ? -1 : 1),
+      render: (dateLastTest: string) => dateRu.format(new Date(dateLastTest)),
+    },
+    {
+      title: 'Вид спорта',
+      dataIndex: 'sport',
+      key: 'sport',
+      width: '250px',
+      filterSearch: true,
+      filters: typesSports.map((sport) => ({ text: sport, value: sport })),
+      onFilter: (value, record) => record.sport === value,
+    },
+    {
+      className: styles.actions,
+      key: 'more',
+      width: '66px',
+      fixed: 'right',
+      render: (_, record) => (
+        <Dropdown menu={{ items: actions }} placement="bottomRight">
+          <MoreOutlined className={styles.more_icon} rotate={90} />
+        </Dropdown>
+      ),
+    },
+  ];
+
   return (
     <main className={styles.patients}>
       <Space className={styles.space} wrap>
@@ -112,6 +172,7 @@ export const PatientsPage: React.FC = () => {
           <LineOutlined className={styles.line_icon} />
           Список пациентов
         </Title>
+        {/* <DatePicker locale={localeRU} /> */}
         <Button
           className={styles.btn_add}
           onClick={() => setIsModalOpen(true)}
@@ -127,9 +188,9 @@ export const PatientsPage: React.FC = () => {
         columns={columns}
         pagination={{ showSizeChanger: true }}
         rowKey={(record) => record.id}
-        scroll={{ x: 740, y: 670 }}
+        scroll={{ x: 740, y: 690 }}
       />
-      <ModalAddPatient isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleCancel} />
+      <ModalAddPatient isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleOk} />
     </main>
   );
 };
