@@ -20,6 +20,7 @@ import type { InputRef, MenuProps } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 import styles from './PatientsPage.module.scss';
+import dayjs from 'dayjs';
 
 const { Title } = Typography;
 
@@ -54,6 +55,7 @@ const actions: MenuProps['items'] = [
 
 export const PatientsPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [lastTestFilterValues, setLastTestFilterValues] = useState<[string, string]>(['', '']);
   const searchInput = useRef<InputRef>(null);
 
   const handleOk = () => {
@@ -126,13 +128,65 @@ export const PatientsPage: React.FC = () => {
       sorter: (a, b) => (Date.parse(a.dateBirth) < Date.parse(b.dateBirth) ? -1 : 1),
       render: (dateBirth) => calculateAge(dateBirth),
     },
-    // Фильтр поиск + сорт по умолчанию новейшими
     {
       title: 'Последний тест',
       dataIndex: 'dateLastTest',
-      width: '170px',
+      width: '180px',
       key: 'dateLastTest',
       sorter: (a, b) => (Date.parse(a.dateLastTest) < Date.parse(b.dateLastTest) ? -1 : 1),
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div className={styles.filter_search} onKeyDown={(e) => e.stopPropagation()}>
+          <DatePicker.RangePicker
+            className={styles.range_picker}
+            allowEmpty={[true, true]}
+            placeholder={['от', 'до']}
+            format="DD.MM.YYYY"
+            suffixIcon={null}
+            allowClear={false}
+            value={[
+              selectedKeys[0] ? dayjs(selectedKeys[0]) : null,
+              selectedKeys[1] ? dayjs(selectedKeys[1]) : null,
+            ]}
+            onChange={(values) => {
+              if (values) {
+                setSelectedKeys([values[0]?.format() || '', values[1]?.format() || '']);
+              }
+            }}
+          />
+          <div className={styles.buttons}>
+            <Button
+              className={styles.button}
+              type="primary"
+              size="small"
+              icon={<SearchOutlined />}
+              onClick={() => {
+                setLastTestFilterValues(selectedKeys as [string, string]);
+                confirm();
+              }}>
+              Поиск
+            </Button>
+            <Button
+              className={styles.button}
+              size="small"
+              onClick={() => {
+                clearFilters && clearFilters();
+                setLastTestFilterValues(['', '']);
+                confirm();
+              }}>
+              Сбросить
+            </Button>
+          </div>
+        </div>
+      ),
+      filterIcon: (filtered: boolean) => {
+        return <SearchOutlined className={filtered ? styles.search_icon_filtered : ''} />;
+      },
+      onFilter: (_, record) => {
+        return (
+          dayjs(record.dateLastTest) > dayjs(lastTestFilterValues[0]) &&
+          dayjs(record.dateLastTest) < dayjs(lastTestFilterValues[1])
+        );
+      },
       render: (dateLastTest: string) => parseDate(dateLastTest),
     },
     {

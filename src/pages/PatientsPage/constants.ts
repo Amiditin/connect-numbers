@@ -20,7 +20,7 @@ const devDataItems: IDevDataItem[] = [
     education: 'Бакалавриат',
     sport: 'Футбол',
     dateBirth: '1996-11-04',
-    dateLastTest: '2023-01-22',
+    dateLastTest: '2023-03-22',
   },
   {
     id: '1',
@@ -31,7 +31,7 @@ const devDataItems: IDevDataItem[] = [
     education: 'Бакалавриат',
     sport: 'Баскетбол',
     dateBirth: '1995-06-21',
-    dateLastTest: '2023-01-26',
+    dateLastTest: '2023-03-26',
   },
   {
     id: '2',
@@ -42,7 +42,7 @@ const devDataItems: IDevDataItem[] = [
     education: 'Среднее общее',
     sport: 'Легкая атлетика',
     dateBirth: '2000-04-12',
-    dateLastTest: '2023-02-10',
+    dateLastTest: '2023-03-10',
   },
   {
     id: '3',
@@ -53,7 +53,7 @@ const devDataItems: IDevDataItem[] = [
     education: 'Среднее профессиональное',
     sport: 'Легкая атлетика',
     dateBirth: '1998-09-15',
-    dateLastTest: '2023-02-03',
+    dateLastTest: '2023-03-03',
   },
   {
     id: '4',
@@ -64,7 +64,7 @@ const devDataItems: IDevDataItem[] = [
     education: 'Специалитет',
     sport: 'Бокс',
     dateBirth: '1999-10-22',
-    dateLastTest: '2023-02-06',
+    dateLastTest: '2023-03-06',
   },
 ];
 
