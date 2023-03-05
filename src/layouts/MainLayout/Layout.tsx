@@ -78,7 +78,7 @@ export const MainLayout: React.FC = () => {
         <div className={styles.header_content}>
           <img
             className={styles.logo}
-            src="/src/shared/assets/images/logo.svg"
+            src="/src/shared/assets/images/logo.png"
             alt="Logo"
             onClick={() => navigate(routes.home)}
           />
