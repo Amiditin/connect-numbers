@@ -10,18 +10,16 @@ import {
   QuestionCircleOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import localeRU from 'antd/es/date-picker/locale/ru_RU';
 
 import { ModalAddPatient } from '@/components';
 import { typesSports } from '@/shared/constants/typesSports';
 import { devData, type IDevDataItem } from './constants';
+import { calculateAge, parseDate } from '@/shared/utils';
 
 import type { InputRef, MenuProps } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 import styles from './PatientsPage.module.scss';
-
-const dateRu = new Intl.DateTimeFormat();
 
 const { Title } = Typography;
 
@@ -55,7 +53,6 @@ const actions: MenuProps['items'] = [
 ];
 
 export const PatientsPage: React.FC = () => {
-  console.log(localeRU.monthFormat);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const searchInput = useRef<InputRef>(null);
 
@@ -127,12 +124,7 @@ export const PatientsPage: React.FC = () => {
       key: 'dateBirth',
       width: '120px',
       sorter: (a, b) => (Date.parse(a.dateBirth) < Date.parse(b.dateBirth) ? -1 : 1),
-      render: (_, record) => {
-        const dateBirth = new Date(record.dateBirth).getTime();
-        const curDate = new Date().getTime();
-
-        return ((curDate - dateBirth) / (24 * 3600 * 365.25 * 1000)) | 0;
-      },
+      render: (dateBirth) => calculateAge(dateBirth),
     },
     // Фильтр поиск + сорт по умолчанию новейшими
     {
@@ -141,7 +133,7 @@ export const PatientsPage: React.FC = () => {
       width: '170px',
       key: 'dateLastTest',
       sorter: (a, b) => (Date.parse(a.dateLastTest) < Date.parse(b.dateLastTest) ? -1 : 1),
-      render: (dateLastTest: string) => dateRu.format(new Date(dateLastTest)),
+      render: (dateLastTest: string) => parseDate(dateLastTest),
     },
     {
       title: 'Вид спорта',
@@ -172,7 +164,6 @@ export const PatientsPage: React.FC = () => {
           <LineOutlined className={styles.line_icon} />
           Список пациентов
         </Title>
-        {/* <DatePicker locale={localeRU} /> */}
         <Button
           className={styles.btn_add}
           onClick={() => setIsModalOpen(true)}
