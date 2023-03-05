@@ -141,7 +141,7 @@ export const RegisterPage: React.FC<RegisterProps> = () => {
           Зарегистрироваться
         </Button>
       </Form>
-      <Link to={routes.auth.login}>
+      <Link to={routes.authLogin.path}>
         <Button className={styles.button_link} icon={<ArrowLeftOutlined />} type="link">
           Назад
         </Button>

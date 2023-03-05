@@ -33,7 +33,7 @@ export const MainLayout: React.FC = () => {
   const isAuthUser = useAppSelector(getIsAuth);
 
   if (!isAuthUser) {
-    return <Navigate to={routes.auth.login} />;
+    return <Navigate to={routes.authLogin.path} />;
   }
 
   const navigate = useNavigate();
@@ -44,12 +44,12 @@ export const MainLayout: React.FC = () => {
       {
         label: 'Профиль',
         key: 'profile',
-        onClick: () => navigate(routes.profile),
+        onClick: () => navigate(routes.profile.path),
       },
       {
         label: 'Пациенты',
         key: 'patients',
-        onClick: () => navigate(routes.patients),
+        onClick: () => navigate(routes.patients.path),
       },
     ],
     [],
@@ -80,7 +80,7 @@ export const MainLayout: React.FC = () => {
             className={styles.logo}
             src="/src/shared/assets/images/logo.png"
             alt="Logo"
-            onClick={() => navigate(routes.home)}
+            onClick={() => navigate(routes.home.path)}
           />
           <Menu
             className={styles.menu}
@@ -94,7 +94,7 @@ export const MainLayout: React.FC = () => {
       <Layout className={styles.layout}>
         <Breadcrumb>
           <Breadcrumb.Item>
-            <HomeOutlined onClick={() => navigate(routes.home)} />
+            <HomeOutlined onClick={() => navigate(routes.home.path)} />
           </Breadcrumb.Item>
           <Breadcrumb.Item>{renderBreadcrumbItemContent()}</Breadcrumb.Item>
         </Breadcrumb>

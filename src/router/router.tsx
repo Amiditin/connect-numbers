@@ -14,7 +14,7 @@ import {
 
 export const router = createBrowserRouter([
   {
-    path: routes.root,
+    path: routes.root.path,
     element: <MainLayout />,
     errorElement: <MainErrorBoundary />,
     children: [
@@ -23,34 +23,34 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: routes.notFound,
+        path: routes.notFound.path,
         element: <NotFoundPage />,
       },
       {
-        path: routes.profile,
+        path: routes.profile.path,
         element: <ProfilePage />,
       },
       {
-        path: routes.patients,
+        path: routes.patients.path,
         element: <PatientsPage />,
       },
     ],
   },
   {
-    path: routes.auth.root,
+    path: routes.authRoot.path,
     element: <AuthLayout />,
     errorElement: <MainErrorBoundary />,
     children: [
       {
-        path: routes.auth.login,
+        path: routes.authLogin.path,
         element: <LoginPage />,
       },
       {
-        path: routes.auth.register,
+        path: routes.authRegister.path,
         element: <RegisterPage />,
       },
       {
-        path: routes.auth.forgotPassword,
+        path: routes.authForgotPassword.path,
         element: <ForgotPasswordPage />,
       },
     ],

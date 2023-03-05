@@ -60,7 +60,7 @@ export const LoginPage: React.FC = () => {
           <Form.Item className={styles.remember} name="remember" valuePropName="checked">
             <Checkbox>Запомнить меня</Checkbox>
           </Form.Item>
-          <Link to={routes.auth.forgotPassword}>
+          <Link to={routes.authForgotPassword.path}>
             <Button className={styles.button_link} type="link">
               Забыли пароль?
             </Button>
@@ -72,7 +72,7 @@ export const LoginPage: React.FC = () => {
       </Form>
       <Space.Compact className={styles.space}>
         <Text>Ещё нет аккаунта?</Text>
-        <Link to={routes.auth.register}>
+        <Link to={routes.authRegister.path}>
           <Button className={styles.button_link} type="link">
             Зарегистрироваться
           </Button>
