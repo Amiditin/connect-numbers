@@ -10,7 +10,7 @@ export const AuthLayout: React.FC = () => {
   const isAuthUser = useAppSelector(getIsAuth);
 
   if (isAuthUser) {
-    return <Navigate to={routes.profile} />;
+    return <Navigate to={routes.profile.path} />;
   }
 
   return (
