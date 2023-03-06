@@ -98,7 +98,8 @@ export const PatientsPage: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
+  const handleOk = (values: any) => {
+    console.log(values);
     setIsModalOpen(false);
   };
 
