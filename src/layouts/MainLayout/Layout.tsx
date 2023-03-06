@@ -8,6 +8,7 @@ import { routes } from '@/router';
 import { getIsAuth } from '@/redux/auth';
 
 import styles from './MainLayout.module.scss';
+import { MainLogo } from '@/shared/assets/images';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -78,7 +79,7 @@ export const MainLayout: React.FC = () => {
         <div className={styles.header_content}>
           <img
             className={styles.logo}
-            src="/src/shared/assets/images/logo.png"
+            src={MainLogo}
             alt="Logo"
             onClick={() => navigate(routes.home.path)}
           />
