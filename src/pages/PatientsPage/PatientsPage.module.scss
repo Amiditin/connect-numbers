@@ -44,10 +44,13 @@
 
   .actions {
     text-align: center;
+    border-left: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+    padding: 16px 0 !important;
 
     .more_icon {
       padding: 5px;
-      font-size: 24px;
+      font-size: 28px;
       cursor: pointer;
       opacity: 0.8;
       transition: opacity $duration;
