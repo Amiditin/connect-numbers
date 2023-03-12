@@ -1,1 +1,20 @@
 @import '/src/shared/scss/_variables.scss';
+
+.profile {
+  display: flex;
+  flex-direction: column;
+
+  .form {
+    width: 420px;
+    margin-top: 20px;
+  }
+
+  .birth {
+    margin: 0;
+
+    .birth_select {
+      width: 130px;
+    }
+  }
+
+}
