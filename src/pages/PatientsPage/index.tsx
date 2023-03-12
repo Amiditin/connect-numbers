@@ -24,7 +24,7 @@ import styles from './PatientsPage.module.scss';
 
 const { Title } = Typography;
 
-const typesSports = devData
+const typesSport = devData
   .reduce((sports: string[], item) => {
     if (!sports.includes(item.sport)) {
       sports.push(item.sport);
@@ -178,7 +178,7 @@ export const PatientsPage: React.FC = () => {
         key: 'sport',
         width: '250px',
         filterSearch: true,
-        filters: typesSports.map((sport) => ({ text: sport, value: sport })),
+        filters: typesSport.map((sport) => ({ text: sport, value: sport })),
         onFilter: (value, record) => record.sport === value,
       },
       {

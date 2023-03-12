@@ -1,2 +1,2 @@
 export * from './configProviderProps';
-export * from './typesSports';
+export * from './typesSport';

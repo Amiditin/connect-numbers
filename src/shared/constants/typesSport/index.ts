@@ -1,4 +1,4 @@
-export const typesSports: string[] = [
+export const typesSport: string[] = [
   'Авиамодельный спорт',
   'Автомобильный спорт',
   'Айкидо',
