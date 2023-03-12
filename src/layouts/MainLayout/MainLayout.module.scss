@@ -53,6 +53,21 @@
     gap: 12px;
   }
 
+  .breadcrumb {
+    color: rgba(0, 0, 0, 0.88);
+    cursor: pointer;
+    opacity: 0.45;
+    transition: all $duration;
+
+    svg {
+      margin-right: 4px;
+    }
+
+    &:hover {
+      opacity: 1 !important;
+    }
+  }
+
   .content {
     padding: 24px;
     background-color: white;

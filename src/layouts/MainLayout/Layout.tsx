@@ -19,7 +19,7 @@ interface IBreadcrumbItem {
 
 const { Content, Header } = Layout;
 
-const breadcrumbMap: Partial<Record<string, IBreadcrumbItem>> = {
+const breadcrumbMap: Record<string, IBreadcrumbItem> = {
   profile: {
     label: 'Профиль',
     icon: <UserOutlined />,
@@ -27,6 +27,10 @@ const breadcrumbMap: Partial<Record<string, IBreadcrumbItem>> = {
   patients: {
     label: 'Пациенты',
     icon: <TeamOutlined />,
+  },
+  patientProfile: {
+    label: 'Профиль пациента',
+    icon: <UserOutlined />,
   },
 };
 
@@ -57,15 +61,32 @@ export const MainLayout: React.FC = () => {
   );
 
   const renderBreadcrumbItemContent = (): React.ReactNode => {
-    const curPathname = location.pathname.slice(1);
+    const curPathname = location.pathname.split('/');
+
+    if (curPathname.length > 2 && curPathname[1] === 'patients') {
+      return (
+        <>
+          <Breadcrumb.Item
+            className={styles.breadcrumb}
+            onClick={() => navigate(routes.patients.path)}>
+            {breadcrumbMap.patients.icon}
+            <span>{breadcrumbMap.patients.label}</span>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            {breadcrumbMap.patientProfile.icon}
+            <span>{breadcrumbMap.patientProfile.label}</span>
+          </Breadcrumb.Item>
+        </>
+      );
+    }
 
     for (const key in breadcrumbMap) {
-      if (key === curPathname) {
+      if (key === curPathname[1]) {
         return (
-          <>
-            {breadcrumbMap[key]?.icon}
-            <span>{breadcrumbMap[key]?.label}</span>
-          </>
+          <Breadcrumb.Item>
+            {breadcrumbMap[key].icon}
+            <span>{breadcrumbMap[key].label}</span>
+          </Breadcrumb.Item>
         );
       }
     }
@@ -97,7 +118,7 @@ export const MainLayout: React.FC = () => {
           <Breadcrumb.Item>
             <HomeOutlined onClick={() => navigate(routes.home.path)} />
           </Breadcrumb.Item>
-          <Breadcrumb.Item>{renderBreadcrumbItemContent()}</Breadcrumb.Item>
+          {renderBreadcrumbItemContent()}
         </Breadcrumb>
         <Content className={styles.content}>
           <Outlet />
