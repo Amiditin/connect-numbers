@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Dropdown, Space, Table, Typography, Input, DatePicker } from 'antd';
 import {
   DeleteOutlined,
+  EditOutlined,
   ExperimentOutlined,
   LineOutlined,
   MoreOutlined,
@@ -12,7 +13,7 @@ import {
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
-import { ModalAddPatient } from '@/components';
+import { ModalAddPatient, ModalAssignTesting } from '@/components';
 import { routes } from '@/router';
 import { calculateAge, parseDate } from '@/shared/utils';
 import { devData, type IDevDataItem } from './constants';
@@ -21,6 +22,8 @@ import type { InputRef } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 import styles from './PatientsPage.module.scss';
+
+type TCurOpenModal = 'addPatient' | 'assignTesting' | null;
 
 const { Title } = Typography;
 
@@ -35,14 +38,10 @@ const typesSport = devData
   .sort();
 
 export const PatientsPage: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [curOpenModal, setCurOpenModal] = useState<TCurOpenModal>(null);
   const [lastTestFilterValues, setLastTestFilterValues] = useState<[string, string]>(['', '']);
   const searchInput = useRef<InputRef>(null);
   const navigate = useNavigate();
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
 
   const columns: ColumnsType<IDevDataItem> = useMemo(
     () => [
@@ -192,17 +191,33 @@ export const PatientsPage: React.FC = () => {
             menu={{
               items: [
                 {
-                  key: '2',
+                  key: 'patientProfile',
                   label: 'Профиль пациента',
                   icon: <UserOutlined />,
-                  onClick: () =>
-                    navigate(
-                      (routes.patientProfile.getPath && routes.patientProfile.getPath(record.id)) ||
-                        routes.home.path,
-                    ),
+                  onClick: () => {
+                    if (routes.patientProfile.getPath) {
+                      navigate(routes.patientProfile.getPath(record.id));
+                    }
+                  },
                 },
-                { key: '1', label: 'Назначить тест', icon: <ExperimentOutlined /> },
-                { key: '3', danger: true, label: 'Удалить', icon: <DeleteOutlined /> },
+                {
+                  key: 'patientProfileEdit',
+                  label: 'Редактировать',
+                  icon: <EditOutlined />,
+                  onClick: () => {
+                    if (routes.patientProfile.getPath) {
+                      navigate(routes.patientProfile.getPath(record.id), {
+                        state: { editing: true },
+                      });
+                    }
+                  },
+                },
+                {
+                  key: 'assignTesting',
+                  label: 'Назначить тест',
+                  icon: <ExperimentOutlined />,
+                  onClick: () => setCurOpenModal('assignTesting'),
+                },
               ],
             }}>
             <MoreOutlined className={styles.more_icon} rotate={90} />
@@ -222,7 +237,7 @@ export const PatientsPage: React.FC = () => {
         </Title>
         <Button
           className={styles.btn_add}
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setCurOpenModal('addPatient')}
           type="primary"
           size="large"
           icon={<PlusOutlined />}>
@@ -237,7 +252,16 @@ export const PatientsPage: React.FC = () => {
         rowKey={(record) => record.id}
         scroll={{ x: 740, y: 710 }}
       />
-      <ModalAddPatient isModalOpen={isModalOpen} handleCancel={handleOk} />
+      <ModalAddPatient
+        isModalOpen={curOpenModal === 'addPatient'}
+        onCancel={() => setCurOpenModal(null)}
+        onSuccessAdd={() => setCurOpenModal(null)}
+      />
+      <ModalAssignTesting
+        isModalOpen={curOpenModal === 'assignTesting'}
+        onCancel={() => setCurOpenModal(null)}
+        onSuccessAssign={() => setCurOpenModal(null)}
+      />
     </main>
   );
 };

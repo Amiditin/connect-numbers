@@ -1,7 +1,12 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, message, Popconfirm, Space, Typography } from 'antd';
-import { DeleteOutlined, EditOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  QuestionCircleOutlined,
+  StopOutlined,
+} from '@ant-design/icons';
 
 import { FormPatient, type IFormPatientValues } from '@/components';
 import { devDataUser } from '../constants';
@@ -16,6 +21,13 @@ export const SectionForm: React.FC = () => {
   const [isEdited, setIsEdited] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.editing) {
+      setIsEdited(true);
+    }
+  }, []);
 
   const success = (loadingText: string, successText: string) => {
     messageApi
@@ -56,10 +68,12 @@ export const SectionForm: React.FC = () => {
           <Button
             className={styles.btn}
             type="primary"
-            disabled={isEdited}
-            icon={<EditOutlined />}
-            onClick={() => setIsEdited(true)}>
-            Редактировать
+            icon={isEdited ? <StopOutlined /> : <EditOutlined />}
+            onClick={() => {
+              isEdited ? setIsEdited(false) : setIsEdited(true);
+            }}>
+            {/* TODO Добавить логику отмены */}
+            {isEdited ? 'Отменить' : 'Редактировать'}
           </Button>
           <Popconfirm
             title="Удалить профиль"

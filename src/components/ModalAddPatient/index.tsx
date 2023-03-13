@@ -6,10 +6,15 @@ import { FormPatient, IFormPatientValues } from '../FormPatient';
 import styles from './ModalAddPatient.module.scss';
 interface IModalAddPatientProps {
   isModalOpen: boolean;
-  handleCancel: () => void;
+  onCancel?: () => void;
+  onSuccessAdd?: () => void;
 }
 
-export const ModalAddPatient: React.FC<IModalAddPatientProps> = ({ isModalOpen, handleCancel }) => {
+export const ModalAddPatient: React.FC<IModalAddPatientProps> = ({
+  isModalOpen,
+  onCancel,
+  onSuccessAdd = () => {},
+}) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,6 +29,7 @@ export const ModalAddPatient: React.FC<IModalAddPatientProps> = ({ isModalOpen, 
       .then(() => {
         message.success(successText, 2.5);
         setIsLoading(false);
+        onSuccessAdd();
       });
   };
 
@@ -39,7 +45,7 @@ export const ModalAddPatient: React.FC<IModalAddPatientProps> = ({ isModalOpen, 
       title="Добавить пациента"
       open={isModalOpen}
       footer={null}
-      onCancel={handleCancel}>
+      onCancel={onCancel}>
       {contextHolder}
       <Divider />
       <FormPatient submitText="Добавить" onSubmit={handleAddPatient} loading={isLoading} />
