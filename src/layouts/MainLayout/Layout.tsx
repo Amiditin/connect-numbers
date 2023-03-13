@@ -8,6 +8,7 @@ import { routes } from '@/router';
 import { getIsAuth } from '@/redux/auth';
 
 import styles from './MainLayout.module.scss';
+import { MainLogo } from '@/shared/assets/images';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -18,7 +19,7 @@ interface IBreadcrumbItem {
 
 const { Content, Header } = Layout;
 
-const breadcrumbMap: Partial<Record<string, IBreadcrumbItem>> = {
+const breadcrumbMap: Record<string, IBreadcrumbItem> = {
   profile: {
     label: 'Профиль',
     icon: <UserOutlined />,
@@ -27,13 +28,17 @@ const breadcrumbMap: Partial<Record<string, IBreadcrumbItem>> = {
     label: 'Пациенты',
     icon: <TeamOutlined />,
   },
+  patientProfile: {
+    label: 'Профиль пациента',
+    icon: <UserOutlined />,
+  },
 };
 
 export const MainLayout: React.FC = () => {
   const isAuthUser = useAppSelector(getIsAuth);
 
   if (!isAuthUser) {
-    return <Navigate to={routes.auth.login} />;
+    return <Navigate to={routes.authLogin.path} />;
   }
 
   const navigate = useNavigate();
@@ -44,27 +49,45 @@ export const MainLayout: React.FC = () => {
       {
         label: 'Профиль',
         key: 'profile',
-        onClick: () => navigate(routes.profile),
+        onClick: () => navigate(routes.profile.path),
       },
       {
         label: 'Пациенты',
         key: 'patients',
-        onClick: () => navigate(routes.patients),
+        onClick: () => navigate(routes.patients.path),
       },
     ],
     [],
   );
 
+  // TODO: обновить Breadcrumbs под antd v5.3 https://ant.design/components/breadcrumb#/home/user
   const renderBreadcrumbItemContent = (): React.ReactNode => {
-    const curPathname = location.pathname.slice(1);
+    const curPathname = location.pathname.split('/');
+
+    if (curPathname.length > 2 && curPathname[1] === 'patients') {
+      return (
+        <>
+          <Breadcrumb.Item
+            className={styles.breadcrumb}
+            onClick={() => navigate(routes.patients.path)}>
+            {breadcrumbMap.patients.icon}
+            <span>{breadcrumbMap.patients.label}</span>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            {breadcrumbMap.patientProfile.icon}
+            <span>{breadcrumbMap.patientProfile.label}</span>
+          </Breadcrumb.Item>
+        </>
+      );
+    }
 
     for (const key in breadcrumbMap) {
-      if (key === curPathname) {
+      if (key === curPathname[1]) {
         return (
-          <>
-            {breadcrumbMap[key]?.icon}
-            <span>{breadcrumbMap[key]?.label}</span>
-          </>
+          <Breadcrumb.Item>
+            {breadcrumbMap[key].icon}
+            <span>{breadcrumbMap[key].label}</span>
+          </Breadcrumb.Item>
         );
       }
     }
@@ -78,9 +101,9 @@ export const MainLayout: React.FC = () => {
         <div className={styles.header_content}>
           <img
             className={styles.logo}
-            src="/src/shared/assets/images/logo.svg"
+            src={MainLogo}
             alt="Logo"
-            onClick={() => navigate(routes.home)}
+            onClick={() => navigate(routes.home.path)}
           />
           <Menu
             className={styles.menu}
@@ -94,9 +117,9 @@ export const MainLayout: React.FC = () => {
       <Layout className={styles.layout}>
         <Breadcrumb>
           <Breadcrumb.Item>
-            <HomeOutlined onClick={() => navigate(routes.home)} />
+            <HomeOutlined onClick={() => navigate(routes.home.path)} />
           </Breadcrumb.Item>
-          <Breadcrumb.Item>{renderBreadcrumbItemContent()}</Breadcrumb.Item>
+          {renderBreadcrumbItemContent()}
         </Breadcrumb>
         <Content className={styles.content}>
           <Outlet />

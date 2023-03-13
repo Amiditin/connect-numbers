@@ -44,7 +44,7 @@ export const ForgotPasswordPage: React.FC = () => {
           Запросить новый пароль
         </Button>
       </Form>
-      <Link to={routes.auth.login}>
+      <Link to={routes.authLogin.path}>
         <Button className={styles.button_link} icon={<ArrowLeftOutlined />} type="link">
           Назад
         </Button>
