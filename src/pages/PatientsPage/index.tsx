@@ -235,7 +235,7 @@ export const PatientsPage: React.FC = () => {
         columns={columns}
         pagination={{ showSizeChanger: true }}
         rowKey={(record) => record.id}
-        scroll={{ x: 740, y: 'auto' }}
+        scroll={{ x: 740, y: 710 }}
       />
       <ModalAddPatient isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleOk} />
     </main>
