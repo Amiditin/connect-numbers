@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, Select, Space } from 'antd';
+import { Button, Col, Form, Input, Row, Select } from 'antd';
 import clsx from 'clsx';
 
 import { typesSport } from '@/shared/constants';
@@ -23,6 +23,7 @@ interface IFormPatientProps {
   className?: string;
   submitText?: string;
   disabled?: boolean;
+  loading?: boolean;
   initialValues?: IFormPatientValues;
   onSubmit?: (values: IFormPatientValues) => void;
 }
@@ -31,6 +32,7 @@ export const FormPatient: React.FC<IFormPatientProps> = ({
   className,
   submitText,
   disabled = false,
+  loading = false,
   initialValues,
   onSubmit,
 }) => {
@@ -170,7 +172,7 @@ export const FormPatient: React.FC<IFormPatientProps> = ({
       </Row>
       <Form.Item>
         {submitText && (
-          <Button className={styles.btn_submit} type="primary" htmlType="submit">
+          <Button className={styles.btn_submit} type="primary" htmlType="submit" loading={loading}>
             {submitText}
           </Button>
         )}
