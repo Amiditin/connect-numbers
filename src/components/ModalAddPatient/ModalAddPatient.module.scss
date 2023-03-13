@@ -1,5 +1,7 @@
 @import '/src/shared/scss/_variables.scss';
 
-.addUser {
-  width: 100%;
+.modal {
+  :global(.ant-modal-content) {
+    padding-bottom: 4px;
+  }
 }
