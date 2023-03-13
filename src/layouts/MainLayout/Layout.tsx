@@ -60,6 +60,7 @@ export const MainLayout: React.FC = () => {
     [],
   );
 
+  // TODO: обновить Breadcrumbs под antd v5.3 https://ant.design/components/breadcrumb#/home/user
   const renderBreadcrumbItemContent = (): React.ReactNode => {
     const curPathname = location.pathname.split('/');
 

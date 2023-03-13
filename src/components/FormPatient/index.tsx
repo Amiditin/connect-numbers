@@ -7,32 +7,47 @@ import { curYear, months, typesEducation } from './constants';
 
 import styles from './FormPatient.module.scss';
 
+export interface IFormPatientValues {
+  fullname: string;
+  email: string;
+  phone: string;
+  gender: string;
+  education: string;
+  sport: string;
+  birthDay: number;
+  birthMonth: number;
+  birthYear: number;
+}
+
 interface IFormPatientProps {
   className?: string;
   submitText?: string;
-  onSubmit?: (values: any) => void;
+  initialValues?: IFormPatientValues;
+  onSubmit?: (values: IFormPatientValues) => void;
 }
 
 export const FormPatient: React.FC<IFormPatientProps> = ({
   className,
   submitText = 'Добавить',
+  initialValues,
   onSubmit,
 }) => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<IFormPatientValues>();
 
-  const handleValuesChange = (values: any) => {
+  const handleValuesChange = (values: IFormPatientValues) => {
     if (values.phone) {
       form.setFieldValue('phone', parsePhone(values.phone));
     }
   };
 
   return (
-    <Form
+    <Form<IFormPatientValues>
       className={clsx(className, styles.form)}
       layout="vertical"
       requiredMark={false}
       onFinish={onSubmit}
       form={form}
+      initialValues={{ ...initialValues, phone: parsePhone(initialValues?.phone || '') }}
       onValuesChange={handleValuesChange}>
       <Row gutter={24}>
         <Col flex="1 1 320px">
@@ -44,12 +59,15 @@ export const FormPatient: React.FC<IFormPatientProps> = ({
           </Form.Item>
         </Col>
         <Col flex="1 1 200px">
-          <Form.Item label="Пол" name="sex" rules={[{ required: true, message: 'Выберите пол' }]}>
+          <Form.Item
+            label="Пол"
+            name="gender"
+            rules={[{ required: true, message: 'Выберите пол' }]}>
             <Select
               placeholder="Мужской"
               options={[
-                { value: 'Мужской', label: 'Мужской' },
-                { value: 'Женский', label: 'Женский' },
+                { value: 'male', label: 'Мужской' },
+                { value: 'female', label: 'Женский' },
               ]}
             />
           </Form.Item>
@@ -148,7 +166,7 @@ export const FormPatient: React.FC<IFormPatientProps> = ({
         </Col>
       </Row>
       <Form.Item>
-        <Button type="primary" htmlType="submit">
+        <Button className={styles.btn_submit} type="primary" htmlType="submit">
           {submitText}
         </Button>
       </Form.Item>

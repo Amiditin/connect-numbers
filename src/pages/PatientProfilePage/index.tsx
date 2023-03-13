@@ -1,11 +1,11 @@
-import { Typography } from 'antd';
+import { message, Typography } from 'antd';
 import { useParams } from 'react-router-dom';
 
-import { FormPatient } from '@/components/FormPatient';
+import { FormPatient, type IFormPatientValues } from '@/components';
 
 import styles from './PatientProfilePage.module.scss';
 
-const devData = {
+const devDataUser = {
   id: '0',
   fullname: 'Назаров Григорий Александрович',
   email: 'nazarov@mail.ru',
@@ -21,17 +21,42 @@ const { Title, Text } = Typography;
 
 export const PatientProfilePage: React.FC = () => {
   const params = useParams();
+  const [messageApi, contextHolder] = message.useMessage();
 
-  const handleEditPatient = (values: any) => {
+  const success = () => {
+    messageApi
+      .open({
+        type: 'loading',
+        content: 'Сохраняем изменения..',
+        duration: 2.5,
+      })
+      .then(() => message.success('Изменения успешно сохранены!', 2.5));
+  };
+
+  const handleEditPatient = (values: IFormPatientValues) => {
     console.log(values);
+    success();
   };
 
   return (
     <main className={styles.profile}>
-      <Title level={1}>Профиль пациента {params?.id || 'Неизвестно'}</Title>
-      <Text>Здесь вы можете просматривать и изменять персональные данные испытуемого.</Text>
+      {contextHolder}
+      <Title level={2}>Профиль пациента</Title>
+      <Text>
+        Здесь вы можете просматривать и редактировать персональные данные испытуемого, а также
+        изучить историю пройденных тестов пациента.
+      </Text>
       <Title level={3}>Персональные данные:</Title>
-      <FormPatient submitText="Редактировать" onSubmit={handleEditPatient} />
+      <FormPatient
+        initialValues={{
+          ...devDataUser,
+          birthDay: +devDataUser.dateBirth.split('-')[2],
+          birthMonth: +devDataUser.dateBirth.split('-')[1],
+          birthYear: +devDataUser.dateBirth.split('-')[0],
+        }}
+        submitText="Сохранить"
+        onSubmit={handleEditPatient}
+      />
     </main>
   );
 };
