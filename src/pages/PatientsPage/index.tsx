@@ -40,7 +40,36 @@ export const PatientsPage: React.FC = () => {
   const searchInput = useRef<InputRef>(null);
   const navigate = useNavigate();
 
-  const handleOk = () => {
+        return ((curDate - dateBirth) / (24 * 3600 * 365.25 * 1000)) | 0;
+      },
+    },
+    {
+      title: 'Последний тест',
+      dataIndex: 'dateLastTest',
+      width: '170px',
+      key: 'dateLastTest',
+    },
+    {
+      title: 'Вид спорта',
+      dataIndex: 'sport',
+      key: 'sport',
+      width: '250px',
+    },
+    {
+      className: styles.actions,
+      key: 'more',
+      width: '66px',
+      fixed: 'right',
+      render: (_, record) => (
+        <Dropdown menu={{ items: actions }}>
+          <MoreOutlined className={styles.more_icon} rotate={90} />
+        </Dropdown>
+      ),
+    },
+  ];
+
+  const handleOk = (values: any) => {
+    console.log(values);
     setIsModalOpen(false);
   };
 
