@@ -22,13 +22,15 @@ export interface IFormPatientValues {
 interface IFormPatientProps {
   className?: string;
   submitText?: string;
+  disabled?: boolean;
   initialValues?: IFormPatientValues;
   onSubmit?: (values: IFormPatientValues) => void;
 }
 
 export const FormPatient: React.FC<IFormPatientProps> = ({
   className,
-  submitText = 'Добавить',
+  submitText,
+  disabled = false,
   initialValues,
   onSubmit,
 }) => {
@@ -47,6 +49,7 @@ export const FormPatient: React.FC<IFormPatientProps> = ({
       requiredMark={false}
       onFinish={onSubmit}
       form={form}
+      disabled={disabled}
       initialValues={{ ...initialValues, phone: parsePhone(initialValues?.phone || '') }}
       onValuesChange={handleValuesChange}>
       <Row gutter={24}>
@@ -166,9 +169,11 @@ export const FormPatient: React.FC<IFormPatientProps> = ({
         </Col>
       </Row>
       <Form.Item>
-        <Button className={styles.btn_submit} type="primary" htmlType="submit">
-          {submitText}
-        </Button>
+        {submitText && (
+          <Button className={styles.btn_submit} type="primary" htmlType="submit">
+            {submitText}
+          </Button>
+        )}
       </Form.Item>
     </Form>
   );
