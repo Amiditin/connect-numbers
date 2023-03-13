@@ -14,6 +14,7 @@ const { Title } = Typography;
 export const SectionForm: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [isEdited, setIsEdited] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const success = (loadingText: string, successText: string) => {
@@ -25,12 +26,14 @@ export const SectionForm: React.FC = () => {
       })
       .then(() => {
         message.success(successText, 2.5);
+        setIsLoading(false);
         setIsEdited(false);
       });
   };
 
   const handleEditPatient = (values: IFormPatientValues) => {
     console.log(values);
+    setIsLoading(true);
     success('Сохраняем изменения...', 'Изменения успешно сохранены!');
   };
 
@@ -84,6 +87,7 @@ export const SectionForm: React.FC = () => {
           birthYear: +devDataUser.dateBirth.split('-')[0],
         }}
         disabled={!isEdited}
+        loading={isLoading}
         submitText={isEdited ? 'Сохранить' : ''}
         onSubmit={handleEditPatient}
       />
