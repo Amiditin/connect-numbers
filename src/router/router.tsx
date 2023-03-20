@@ -11,6 +11,7 @@ import {
   ProfilePage,
   PatientsPage,
   PatientProfilePage,
+  OrganizationsPage,
 } from '@/pages';
 
 export const router = createBrowserRouter([
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         path: routes.patientProfile.path,
         element: <PatientProfilePage />,
+      },
+      {
+        path: routes.organizations.path,
+        element: <OrganizationsPage />,
       },
     ],
   },

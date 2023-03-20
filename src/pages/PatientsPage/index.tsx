@@ -2,7 +2,6 @@ import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Dropdown, Space, Table, Typography, Input, DatePicker } from 'antd';
 import {
-  DeleteOutlined,
   EditOutlined,
   ExperimentOutlined,
   LineOutlined,
@@ -236,6 +235,7 @@ export const PatientsPage: React.FC = () => {
           Список пациентов
         </Title>
         <Button
+          // Todo убрать класс
           className={styles.btn_add}
           onClick={() => setCurOpenModal('addPatient')}
           type="primary"
@@ -244,6 +244,7 @@ export const PatientsPage: React.FC = () => {
           Добавить пациента
         </Button>
       </Space>
+      {/* Todo декомпозировать таблицу */}
       <Table
         className={styles.table}
         dataSource={devData}

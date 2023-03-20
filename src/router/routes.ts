@@ -31,6 +31,14 @@ export const routes: TRoutes = {
     pageTitle: 'Профиль пациента',
     getPath: (patientId: string) => `/patients/${patientId}`,
   },
+  organizations: {
+    path: '/organizations',
+    pageTitle: 'Организации',
+  },
+  researchers: {
+    path: '/researchers',
+    pageTitle: 'Исследователи',
+  },
 
   authRoot: {
     path: '/auth',

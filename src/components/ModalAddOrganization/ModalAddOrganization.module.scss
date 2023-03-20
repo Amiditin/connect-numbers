@@ -1,0 +1,7 @@
+@import '/src/shared/scss/_variables.scss';
+
+.modal {
+  :global(.ant-modal-content) {
+    padding-bottom: 4px;
+  }
+}

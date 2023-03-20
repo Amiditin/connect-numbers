@@ -5,6 +5,8 @@ import { routes } from '@/router/routes';
 
 import styles from './NotFoundPage.module.scss';
 
+// Todo пофиксить рендер
+
 export const NotFoundPage: React.FC = () => {
   return (
     <div className={styles.notFound}>
