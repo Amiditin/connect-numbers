@@ -1,75 +1,82 @@
 import React from 'react';
 import styles from './HomePage.module.scss';
 import { useRef, useState } from 'react';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, LineOutlined, PlusOutlined } from '@ant-design/icons';
 import type { InputRef } from 'antd';
+import { Typography } from 'antd';
 import { Button, Input, Space, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
-import Highlighter from 'react-highlight-words';
+import { Dropdown } from 'antd';
+import { UserOutlined, EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
+// import Highlighter from 'react-highlight-words';
+import { Modal, Form } from 'antd';
+import { ModalAddPatient, ModalAssignTesting } from '@/components';
+type TCurOpenModal = 'addPatient' | 'assignTesting' | null;
 
+const { Title } = Typography;
 interface DataType {
   key: string;
+  short_name: string;
   name: string;
-  // birth_data: string;  ????
-  birth_data: string;
+  contact: string;
   test_date: string;
   address: string;
-  sex: string;
-  sport: string;
-  test1: number;
-  test2: number;
+  email: string;
+  phone: string;
+  website: string;
 }
 
 type DataIndex = keyof DataType;
 const data: DataType[] = [
   {
     key: '1',
-    name: 'John Brown',
-    birth_data: '05.09.1997',
+    short_name: 'ФК Волга',
+    name: 'Футбольный клуб Волга',
+    contact: 'Алексей Воробьёв',
     address: 'New York No. 1 Lake Park',
     test_date: '15.03.2022',
-    sex: 'м',
-    sport: 'футбол',
-    test1: 10,
-    test2: 12,
+    email: 'maxkazs@yandex.ru',
+    phone: ' +71231234567',
+    website: 'www.sport.ru',
   },
   {
     key: '2',
-    name: 'Joe Black',
-    birth_data: '15.01.2001',
+    short_name: 'ФК Ника',
+    name: 'Футбольный клуб Ника',
+    contact: 'Дмитрий Воронин',
     address: 'London No. 1 Lake Park',
     test_date: '15.03.2022',
-    sex: 'м',
-    sport: 'бокс',
-    test1: 10,
-    test2: 12,
+    email: 'lop45sd@yandex.ru',
+    phone: ' +71231234567',
+    website: 'www.sport.ru',
   },
   {
     key: '3',
-    name: 'Jim Green',
-    birth_data: '07.05.1995',
+    short_name: 'ФК',
+    name: 'Футбольный клуб',
+    contact: 'Иван Иванов',
     address: 'Sydney No. 1 Lake Park',
     test_date: '15.03.2022',
-    sex: 'м',
-    sport: 'баскетбол',
-    test1: 10,
-    test2: 12,
+    email: 'djkk34ksd@yandex.ru',
+    phone: ' +71231234567',
+    website: 'www.sport.ru',
   },
   {
     key: '4',
-    name: 'Jim Red',
-    birth_data: '06.10.1998',
+    short_name: 'ФК',
+    name: 'Футбольный клуб',
+    contact: 'Евгений Васильков',
     address: 'London No. 2 Lake Park',
     test_date: '15.03.2022',
-    sex: 'м',
-    sport: 'бадминтон',
-    test1: 10,
-    test2: 12,
+    email: 'asksd@yandex.ru',
+    phone: ' +71231234567',
+    website: 'www.sport.ru',
   },
 ];
 
 export const HomePage: React.FC = () => {
+  const [curOpenModal, setCurOpenModal] = useState<TCurOpenModal>(null);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
@@ -149,92 +156,211 @@ export const HomePage: React.FC = () => {
         setTimeout(() => searchInput.current?.select(), 100);
       }
     },
-    render: (text) =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
+    // render: (text) =>
+    //   searchedColumn === dataIndex ? (
+    //     <Highhter
+    //       highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+    //       searchWords={[searchText]}
+    //       autoEscape
+    //       textToHighlight={text ? text.toString() : ''}
+    //     />
+    //   ) : (
+    //     text
+    //   ),
   });
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Дата тестирования',
-      dataIndex: 'test_date',
-      key: 'test_date',
-      ...getColumnSearchProps('test_date'),
+      title: 'Кратное название',
+      dataIndex: 'short_name',
+      key: 'short_name',
+      ...getColumnSearchProps('short_name'),
     },
     {
-      title: 'ФИО',
+      title: 'Название Организации',
       dataIndex: 'name',
       key: 'name',
       width: '30%',
       ...getColumnSearchProps('name'),
     },
     {
-      title: 'Дата рождения',
-      dataIndex: 'birth_data',
-      key: 'birth_data',
+      title: 'Контактное лицо',
+      dataIndex: 'contact',
+      key: 'contact',
       width: '20%',
-      ...getColumnSearchProps('birth_data'),
+      ...getColumnSearchProps('contact'),
     },
     {
-      title: 'Пол',
-      dataIndex: 'sex',
-      key: 'sex',
-      width: '20%',
-      ...getColumnSearchProps('sex'),
-    },
-    {
-      title: 'Вид спорта',
-      dataIndex: 'sport',
-      key: 'sport',
-      width: '20%',
-      ...getColumnSearchProps('sport'),
-    },
-    {
-      title: 'Тест1',
-      dataIndex: 'test1',
-      key: 'test1',
-      width: '20%',
-      ...getColumnSearchProps('test1'),
-    },
-    {
-      title: 'Тест2',
-      dataIndex: 'test2',
-      key: 'test2',
-      width: '20%',
-      ...getColumnSearchProps('test2'),
-    },
-    {
-      title: 'Address',
+      title: 'Адрес',
       dataIndex: 'address',
       key: 'address',
+      width: '20%',
       ...getColumnSearchProps('address'),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'Почта',
+      dataIndex: 'email',
+      key: 'email',
+      width: '20%',
+      ...getColumnSearchProps('email'),
+    },
+    {
+      title: 'Телефон',
+      dataIndex: 'phone',
+      key: 'phone',
+      width: '20%',
+      ...getColumnSearchProps('phone'),
+    },
+    {
+      title: 'Веб-сайт',
+      dataIndex: 'website',
+      key: 'website',
+      width: '20%',
+      ...getColumnSearchProps('website'),
+    },
+    {
+      key: 'more',
+      width: '46px',
+      fixed: 'right',
+      render: (_, record) => (
+        <Dropdown
+          placement="bottomRight"
+          menu={{
+            items: [
+              {
+                key: 'organizationProfile',
+                label: 'Участники',
+                icon: <UserOutlined />,
+                // onClick: () => {
+                //   if (routes.patientProfile.getPath) {
+                //     navigate(routes.patientProfile.getPath(record.id));
+                //   }
+                // },
+              },
+              {
+                key: 'organizationProfileEdit',
+                label: 'Редактировать',
+                icon: <EditOutlined />,
+                // onClick: () => {
+                //   if (routes.patientProfile.getPath) {
+                //     navigate(routes.patientProfile.getPath(record.id), {
+                //       state: { editing: true },
+                //     });
+                //   }
+                // },
+              },
+              {
+                key: 'Delete',
+                label: 'Удалить',
+                icon: <DeleteOutlined />,
+                onClick: () => setCurOpenModal('assignTesting'),
+              },
+            ],
+          }}>
+          <MoreOutlined rotate={90} />
+        </Dropdown>
+      ),
     },
   ];
-  // const[result,setResult]=useState([]);
 
   return (
-    <main>
-      <Table columns={columns} dataSource={data} id="table-to-xls" />
-      <div>
-        {/* <ReactHTMLTableToExcel
-          id="table-to-xls"
-          className="download-table-xls-button btn btn-primary mb-3"
-          table="table-to-xls"
-          filename="tablexls"
-          sheet="tablexls"
-          buttonText="Download as XLS"
-        /> */}
-      </div>
-    </main>
+    <React.Fragment>
+      <main>
+        <Space wrap>
+          <Title>
+            <LineOutlined />
+            Список Организаций
+          </Title>
+
+          <Button
+            // onClick={() => setCurOpenModal('addPatient')}
+            type="primary"
+            // new block
+            // onClick={showModal}
+            //  new block
+            size="large"
+            icon={<PlusOutlined />}>
+            Добавить организацию
+          </Button>
+        </Space>
+        <Table columns={columns} dataSource={data} id="table-to-xls" />
+        <ModalAssignTesting
+          isModalOpen={curOpenModal === 'assignTesting'}
+          onCancel={() => setCurOpenModal(null)}
+          onSuccessAssign={() => setCurOpenModal(null)}
+        />
+        <Modal
+          title="Внесите данные об организации"
+          open={true}
+          // onOk={handleOk}
+          // onCancel={handleCancel}
+        >
+          <Form
+            layout="horizontal"
+            name="basic"
+            labelCol={{ span: 10 }}
+            // wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 700 }}
+            initialValues={{ remember: true }}
+            autoComplete="off"
+            onFinishFailed={(values) => {
+              console.log({ values });
+            }}>
+            <Form.Item
+              label="Кратное название"
+              name="short_name"
+              rules={[{ required: true, message: 'Заполните имя' }]}>
+              <Input style={{ width: 298 }} placeholder="ФK" />
+            </Form.Item>
+            <Form.Item
+              label="Название Организации"
+              name="name"
+              rules={[{ required: true, message: 'Заполните имя' }]}>
+              <Input style={{ width: 298 }} placeholder="Футбольный клуб " />
+            </Form.Item>
+            <Form.Item label="Контактное лицо" name="contact">
+              <Input style={{ width: 298 }} placeholder="Иван Иванов Иванонич " />
+            </Form.Item>
+            <Form.Item name="address" label="Адрес">
+              <Space direction="vertical">
+                <Input style={{ width: 298 }} placeholder="г. Нижний Новгород" />
+              </Space>
+            </Form.Item>
+
+            <Form.Item
+              name="email"
+              label="Почта"
+              rules={[{ type: 'email', message: 'Некорректная почта' }]}
+              hasFeedback>
+              <Space direction="vertical">
+                <Input style={{ width: 298 }} placeholder="davidvilcao@gmail.com" />
+              </Space>
+            </Form.Item>
+            <Form.Item
+              label="Телефон"
+              name="phone"
+              rules={[
+                { message: 'Заполните телефон' },
+                { pattern: /^\+7\(\d{3}\)\d{3}\-\d{2}\-\d{2}/g, message: 'Некорректный номер' },
+              ]}>
+              <Input style={{ width: 298 }} maxLength={16} placeholder="+7(999)555-33-22" />
+            </Form.Item>
+            <Form.Item
+              name="website"
+              label="Веб-сайт"
+              rules={[{ type: 'url', message: 'Некорректная ссылка' }]}
+              hasFeedback>
+              <Space direction="vertical">
+                <Input style={{ width: 298 }} placeholder="www.sport.ru" />
+              </Space>
+            </Form.Item>
+
+            <Button type="primary" htmlType="submit">
+              Добавить
+            </Button>
+          </Form>
+        </Modal>
+      </main>
+    </React.Fragment>
   );
 };
