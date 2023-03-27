@@ -2,14 +2,7 @@ export interface IUser {
   email: string;
 }
 
-interface IAuthUser {
-  user: IUser;
-  isAuth: true;
+export interface IAuthState {
+  user: null | IUser;
+  isAuth: boolean;
 }
-
-interface INotAuthUser {
-  user: null;
-  isAuth: false;
-}
-
-export type IAuthState = IAuthUser | INotAuthUser;

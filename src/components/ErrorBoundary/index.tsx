@@ -1,7 +1,7 @@
 import { useRouteError } from 'react-router-dom';
 import { Button, Result } from 'antd';
 
-export const MainErrorBoundary: React.FC = () => {
+export const ErrorBoundary: React.FC = () => {
   const error = useRouteError();
   console.error(error);
 

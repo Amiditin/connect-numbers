@@ -1,3 +1,4 @@
+export * from './ErrorBoundary';
 export * from './FormOrganization';
 export * from './FormPatient';
 export * from './ModalAddOrganization';

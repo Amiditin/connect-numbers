@@ -31,12 +31,17 @@ export const routes: TRoutes = {
     pageTitle: 'Профиль пациента',
     getPath: (patientId: string) => `/patients/${patientId}`,
   },
+
+  adminRoot: {
+    path: '/admin',
+    pageTitle: 'Профиль',
+  },
   organizations: {
-    path: '/organizations',
+    path: '/admin/organizations',
     pageTitle: 'Организации',
   },
   researchers: {
-    path: '/researchers',
+    path: '/admin/researchers',
     pageTitle: 'Исследователи',
   },
 

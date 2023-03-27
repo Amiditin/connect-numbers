@@ -1,14 +1,12 @@
 import { useMemo } from 'react';
-import { Navigate, Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-router-dom';
 import { Breadcrumb, Layout, Menu, type MenuProps } from 'antd';
 import { UserOutlined, HomeOutlined, TeamOutlined } from '@ant-design/icons';
 
-import { useAppSelector } from '@/shared/hooks';
 import { routes } from '@/router';
-import { getIsAuth } from '@/redux/auth';
-
-import styles from './MainLayout.module.scss';
 import { MainLogo } from '@/shared/assets/images';
+
+import styles from './ResearcherLayout.module.scss';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -34,13 +32,7 @@ const breadcrumbMap: Record<string, IBreadcrumbItem> = {
   },
 };
 
-export const MainLayout: React.FC = () => {
-  const isAuthUser = useAppSelector(getIsAuth);
-
-  if (!isAuthUser) {
-    return <Navigate to={routes.authLogin.path} />;
-  }
-
+export const ResearcherLayout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 

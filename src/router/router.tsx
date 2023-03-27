@@ -1,7 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import { routes } from './routes';
-import { MainLayout, MainErrorBoundary, AuthLayout } from '@/layouts';
+import { ErrorBoundary } from '@/components';
+import { MainLayout, ResearcherLayout, AdminLayout, AuthLayout } from '@/layouts';
 import {
   HomePage,
   NotFoundPage,
@@ -18,50 +19,36 @@ export const router = createBrowserRouter([
   {
     path: routes.root.path,
     element: <MainLayout />,
-    errorElement: <MainErrorBoundary />,
+    errorElement: <ErrorBoundary />,
     children: [
       {
-        index: true,
-        element: <HomePage />,
+        element: <ResearcherLayout />,
+        path: routes.root.path,
+        children: [
+          { index: true, element: <HomePage /> },
+          { path: routes.notFound.path, element: <NotFoundPage /> },
+          { path: routes.profile.path, element: <ProfilePage /> },
+          { path: routes.patients.path, element: <PatientsPage /> },
+          { path: routes.patientProfile.path, element: <PatientProfilePage /> },
+          { path: routes.organizations.path, element: <OrganizationsPage /> },
+        ],
       },
       {
-        path: routes.notFound.path,
-        element: <NotFoundPage />,
+        element: <AdminLayout />,
+        path: routes.adminRoot.path,
+        children: [
+          { path: routes.organizations.path, element: <OrganizationsPage /> },
+          // { path: routes.researchers.path },
+        ],
       },
       {
-        path: routes.profile.path,
-        element: <ProfilePage />,
-      },
-      {
-        path: routes.patients.path,
-        element: <PatientsPage />,
-      },
-      {
-        path: routes.patientProfile.path,
-        element: <PatientProfilePage />,
-      },
-      {
-        path: routes.organizations.path,
-        element: <OrganizationsPage />,
-      },
-    ],
-  },
-  {
-    path: routes.authRoot.path,
-    element: <AuthLayout />,
-    errorElement: <MainErrorBoundary />,
-    children: [
-      {
-        path: routes.authLogin.path,
-        element: <LoginPage />,
-      },
-      {
-        path: routes.authRegister.path,
-        element: <RegisterPage />,
-      },
-      {
-        path: routes.authForgotPassword.path,
-        element: <ForgotPasswordPage />,
+        path: routes.authRoot.path,
+        element: <AuthLayout />,
+        children: [
+          { path: routes.authLogin.path, element: <LoginPage /> },
+          { path: routes.authRegister.path, element: <RegisterPage /> },
+          { path: routes.authForgotPassword.path, element: <ForgotPasswordPage /> },
+        ],
       },
     ],
   },
