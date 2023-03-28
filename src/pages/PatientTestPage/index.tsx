@@ -11,6 +11,7 @@ import type { TTestStatus } from './types';
 
 import styles from './PatientTestPage.module.scss';
 import { Stopwatch } from '@/components';
+import { SmileOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
@@ -40,7 +41,7 @@ export const PatientTestPage: React.FC = () => {
     }
   }, [size.width]);
 
-  const handleTestFinish = (time: number) => {
+  const handleTestFinish = (time: number | null) => {
     const completedTest = tests.find((test) => !test.completed);
 
     if (!completedTest) {
@@ -65,8 +66,11 @@ export const PatientTestPage: React.FC = () => {
           всего будет 5 цифр и 5 букв. В четвертом задании то же самое, только цифр и букв по 12.
           Первый и третий тесты опциональные и не влияют на результаты.
         </Text>
+        <Text>
+          <Text strong>Примечание:</Text> не перепутайте цифру 3 с буквой З <SmileOutlined />
+        </Text>
         <div className={styles.box} ref={boxRef}>
-          <div className={styles.top}>
+          <div className={styles.box_menu}>
             <ul className={styles.tabs}>
               {tests.map((test) => (
                 <li
@@ -107,12 +111,21 @@ export const PatientTestPage: React.FC = () => {
                 Начать тест {tests.find((test) => test.completed === false)?.number}
               </Button>
             )}
+            {(tests.find((test) => !test.completed)?.number === 1 ||
+              tests.find((test) => !test.completed)?.number === 3) && (
+              <Button
+                className={clsx(styles.btn_start, testStatus !== 'started' && styles.display)}
+                size="large"
+                onClick={() => handleTestFinish(null)}>
+                Пропустить
+              </Button>
+            )}
             {tests.map(
               (test) =>
                 test.completed && (
                   <li className={styles.result} key={test.number}>
                     <span>Тест {test.number}.</span>
-                    <span>Время: {test.time} сек.</span>
+                    {test.time ? <span>Время: {test.time} сек.</span> : <span>Не пройден</span>}
                   </li>
                 ),
             )}

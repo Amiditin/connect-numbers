@@ -2,9 +2,14 @@
 @import '/src/shared/scss/_mixins.scss';
 
 .layout {
+  .display {
+    display: flex !important;
+  }
+
   .content {
     display: flex;
     flex-direction: column;
+    gap: 6px;
     width: 100%;
     max-width: 900px;
     min-height: calc(100vh - 50px);
@@ -27,22 +32,17 @@
   }
 
   .box {
-    margin-top: 30px;
+    margin-top: 25px;
     position: relative;
-  }
+    border: 2px solid rgba($color-primary, 0.8);
+    border-radius: 6px;
 
-  .display {
-    display: flex !important;
-  }
-
-  .top {
-    display: flex;
-    justify-content: space-between;
-    border: 2px solid rgba($color-primary, 0.2);
-    border-bottom: none;
-    border-radius: 6px 6px 0 0;
-    color: rgba($color-primary, 0.7);
-    font-weight: 600;
+    .box_menu {
+      display: flex;
+      justify-content: space-between;
+      color: rgba($color-primary, 0.6);
+      font-weight: 600;
+    }
   }
 
   .tabs {
@@ -50,8 +50,8 @@
 
     .tab {
       padding: 5px 14px;
-      border-right: 2px solid rgba($color-primary, 0.2);
-      border-bottom: 2px solid rgba($color-primary, 0.2);
+      border-right: 2px solid rgba($color-primary, 0.6);
+      border-bottom: 2px solid rgba($color-primary, 0.6);
     }
 
     .tab_completed {
@@ -61,22 +61,14 @@
     .tab_current {
       border-bottom: none;
     }
-  }
 
+  }
 
   .timer {
     padding: 5px 14px;
     opacity: 0.9;
     display: flex;
     gap: 3px;
-  }
-
-  .btn_start {
-    display: none;
-    max-width: 240px;
-    width: 100%;
-    justify-content: center;
-    margin-bottom: 5px;
   }
 
   .results {
@@ -92,16 +84,25 @@
     bottom: 0;
     left: 0;
     right: 0;
-  }
 
-  .result {
-    width: 100%;
-    color: rgba($color-primary, 0.7);
-    font-size: 18px;
-    font-weight: 600;
+    .result {
+      width: 100%;
+      color: rgba($color-primary, 0.7);
+      font-size: 18px;
+      font-weight: 600;
 
-    span:first-child {
-      margin-right: 16px;
+      span:first-child {
+        margin-right: 16px;
+      }
+    }
+
+    .btn_start {
+      display: none;
+      max-width: 240px;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 5px;
     }
   }
+
 }
