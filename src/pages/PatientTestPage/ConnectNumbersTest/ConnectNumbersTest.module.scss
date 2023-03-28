@@ -1,0 +1,51 @@
+@import '/src/shared/scss/_variables.scss';
+
+.test {
+  border: 2px solid rgba($color-primary, 0.2);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+
+  .line {
+    display: none;
+    stroke: $color-primary;
+    stroke-width: 2px;
+  }
+
+  .line_active {
+    display: block;
+  }
+
+  .items {
+    display: none;
+  }
+
+  .item {
+    cursor: pointer;
+
+    .circle {
+      stroke: $color-primary;
+      stroke-width: 2px;
+      fill: $color-white;
+    }
+
+    .text {
+      text-anchor: middle;
+      fill: $color-primary;
+    }
+  }
+
+  .item_active {
+    pointer-events: none;
+
+    .circle {
+      stroke: $color-primary;
+      stroke-width: 2px;
+      fill: $color-primary;
+    }
+
+    .text {
+      font-weight: bold;
+      fill: $color-white;
+    }
+  }
+}

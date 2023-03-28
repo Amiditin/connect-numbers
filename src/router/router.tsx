@@ -4,15 +4,16 @@ import { routes } from './routes';
 import { ErrorBoundary } from '@/components';
 import { MainLayout, ResearcherLayout, AdminLayout, AuthLayout } from '@/layouts';
 import {
-  HomePage,
-  NotFoundPage,
-  LoginPage,
-  RegisterPage,
   ForgotPasswordPage,
-  ProfilePage,
-  PatientsPage,
-  PatientProfilePage,
+  HomePage,
+  LoginPage,
+  NotFoundPage,
   OrganizationsPage,
+  PatientProfilePage,
+  PatientsPage,
+  PatientTestPage,
+  ProfilePage,
+  RegisterPage,
 } from '@/pages';
 
 export const router = createBrowserRouter([
@@ -26,7 +27,6 @@ export const router = createBrowserRouter([
         path: routes.root.path,
         children: [
           { index: true, element: <HomePage /> },
-          { path: routes.notFound.path, element: <NotFoundPage /> },
           { path: routes.profile.path, element: <ProfilePage /> },
           { path: routes.patients.path, element: <PatientsPage /> },
           { path: routes.patientProfile.path, element: <PatientProfilePage /> },
@@ -51,5 +51,11 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  { path: routes.notFound.path, element: <NotFoundPage /> },
+  {
+    path: routes.testRoot.path,
+    element: <PatientTestPage />,
+    errorElement: <ErrorBoundary />,
   },
 ]);

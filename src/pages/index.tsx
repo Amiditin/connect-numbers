@@ -5,3 +5,4 @@ export * from './PatientProfilePage';
 export * from './PatientsPage';
 export * from './ProfilePage';
 export * from './OrganizationsPage';
+export * from './PatientTestPage';
