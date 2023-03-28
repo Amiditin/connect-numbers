@@ -78,6 +78,11 @@ export const LoginPage: React.FC = () => {
           </Button>
         </Link>
       </Space.Compact>
+      <Link to={routes.testRoot.path}>
+        <Button className={styles.button} type="primary" size="large">
+          Пройти тестирование
+        </Button>
+      </Link>
     </Space>
   );
 };
