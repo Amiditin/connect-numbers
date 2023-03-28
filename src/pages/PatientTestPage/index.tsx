@@ -81,7 +81,7 @@ export const PatientTestPage: React.FC = () => {
                       styles.tab_current,
                   )}
                   key={test.number}>
-                  Тест {test.number}
+                  {size.width > 460 && 'Тест'} {test.number}
                 </li>
               ))}
             </ul>
