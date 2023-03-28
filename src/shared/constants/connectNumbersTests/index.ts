@@ -3,6 +3,7 @@ export interface IConnectNumbersTest {
   completed: boolean;
   time: number | null;
   withLetters: boolean;
+  isOptional: boolean;
   numberItems: number;
 }
 
@@ -12,6 +13,7 @@ export const connectNumbersTests: IConnectNumbersTest[] = [
     completed: false,
     time: null,
     withLetters: false,
+    isOptional: true,
     numberItems: 10,
   },
   {
@@ -19,6 +21,7 @@ export const connectNumbersTests: IConnectNumbersTest[] = [
     completed: false,
     time: null,
     withLetters: false,
+    isOptional: false,
     numberItems: 24,
   },
   {
@@ -26,6 +29,7 @@ export const connectNumbersTests: IConnectNumbersTest[] = [
     completed: false,
     time: null,
     withLetters: true,
+    isOptional: true,
     numberItems: 10,
   },
   {
@@ -33,6 +37,7 @@ export const connectNumbersTests: IConnectNumbersTest[] = [
     completed: false,
     time: null,
     withLetters: true,
+    isOptional: false,
     numberItems: 24,
   },
 ];

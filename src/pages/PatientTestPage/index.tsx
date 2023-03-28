@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Layout, Typography } from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
 
 import { ConnectNumbersTest } from './ConnectNumbersTest';
+import { Stopwatch } from '@/components';
 import { connectNumbersTests } from '@/shared/constants';
 import { useWindowSize } from '@/shared/hooks';
 
 import type { TTestStatus } from './types';
 
 import styles from './PatientTestPage.module.scss';
-import { Stopwatch } from '@/components';
-import { SmileOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
@@ -63,8 +63,8 @@ export const PatientTestPage: React.FC = () => {
           <Text strong>Механика:</Text> тестирование состоит из четырех тестов: двух пробных (1, 3)
           и двух зачетных (2, 4). В первом тесте необходимо соединить последовательно цифры от 1 до
           10, кликая на них мышкой как можно быстрее, а во втором уже от 1 до 24. В третьем тесте
-          соединить последовательно цифры с буквами, например ...-3-В-4-Г-..., всего будет 5 цифр и
-          5 букв. В четвертом задании то же самое, только цифр и букв по 12.
+          соединить последовательно цифры с буквами, например 1-А-2-Б-3-..., всего будет 5 цифр и 5
+          букв. В четвертом задании то же самое, только цифр и букв по 12.
         </Text>
         <Text>
           <Text strong>Примечание:</Text> не перепутайте цифру 3 с буквой З <SmileOutlined />
@@ -111,8 +111,7 @@ export const PatientTestPage: React.FC = () => {
                 Начать тест {tests.find((test) => test.completed === false)?.number}
               </Button>
             )}
-            {(tests.find((test) => !test.completed)?.number === 1 ||
-              tests.find((test) => !test.completed)?.number === 3) && (
+            {tests.find((test) => !test.completed)?.isOptional && (
               <Button
                 className={clsx(styles.btn_start, testStatus !== 'started' && styles.display)}
                 size="large"
