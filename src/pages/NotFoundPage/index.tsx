@@ -7,18 +7,16 @@ import styles from './NotFoundPage.module.scss';
 
 export const NotFoundPage: React.FC = () => {
   return (
-    <div className={styles.notFound}>
-      <Result
-        className={styles.box}
-        status="404"
-        title="404"
-        subTitle="Страница не найдена. Попробуйте найти то, что вам нужно, с главной страницы."
-        extra={
-          <Link to={routes.home.path}>
-            <Button type="primary">На главную</Button>
-          </Link>
-        }
-      />
-    </div>
+    <Result
+      className={styles.box}
+      status="404"
+      title="404"
+      subTitle="Страница не найдена. Попробуйте найти то, что вам нужно, с главной страницы."
+      extra={
+        <Link to={routes.home.path}>
+          <Button type="primary">На главную</Button>
+        </Link>
+      }
+    />
   );
 };

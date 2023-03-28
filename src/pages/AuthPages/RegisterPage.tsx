@@ -54,18 +54,6 @@ export const RegisterPage: React.FC<RegisterProps> = () => {
           />
         </Form.Item>
         <Form.Item
-          name="position"
-          label="Должность"
-          rules={[{ required: true, message: 'Укажите должность!' }]}>
-          <Select
-            placeholder="Выберете роль"
-            options={[
-              { value: 'researcher', label: 'Исследователь' },
-              { value: 'moderator', label: 'Модератор' },
-            ]}
-          />
-        </Form.Item>
-        <Form.Item
           name="organization"
           label="Организация"
           rules={[{ required: true, message: 'Укажите организацию!' }]}>

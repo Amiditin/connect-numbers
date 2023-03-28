@@ -1,6 +1,7 @@
-import React from 'react';
-import styles from './HomePage.module.scss';
+import { Navigate } from 'react-router-dom';
+
+import { routes } from '@/router';
 
 export const HomePage: React.FC = () => {
-  return <div className={styles.home}>Home Page</div>;
+  return <Navigate to={routes.profile.path} />;
 };

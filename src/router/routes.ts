@@ -18,6 +18,18 @@ export const routes: TRoutes = {
     path: '*',
     pageTitle: '404',
   },
+
+  testRoot: {
+    path: '/test',
+    pageTitle: 'Тест',
+  },
+
+  testPatient: {
+    path: '/test/:id',
+    pageTitle: 'Тест пациента',
+    getPath: (patientId: string) => `/test/${patientId}`,
+  },
+
   profile: {
     path: '/profile',
     pageTitle: 'Профиль',
@@ -30,6 +42,19 @@ export const routes: TRoutes = {
     path: '/patients/:id',
     pageTitle: 'Профиль пациента',
     getPath: (patientId: string) => `/patients/${patientId}`,
+  },
+
+  adminRoot: {
+    path: '/admin',
+    pageTitle: 'Админка',
+  },
+  organizations: {
+    path: '/admin/organizations',
+    pageTitle: 'Организации',
+  },
+  researchers: {
+    path: '/admin/researchers',
+    pageTitle: 'Исследователи',
   },
 
   authRoot: {

@@ -1,0 +1,32 @@
+@import '/src/shared/scss/_variables.scss';
+
+.modal {
+  :global(.ant-modal-title) {
+    margin-top: -4px;
+  }
+
+  :global(.ant-modal-content) {
+    padding-bottom: 4px;
+  }
+
+  .form {
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px white inset !important;
+    }
+
+    .form_item {
+      width: 100%;
+    }
+
+    .btn_submit {
+      float: right;
+      margin-top: 10px;
+      width: 190px;
+    }
+  }
+
+}

@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { Button, Table, Typography } from 'antd';
 import { ExperimentOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 import { devDataResult, type IDevDataResult } from '../constants';
+import { ModalAssignTesting } from '@/components';
 
 import type { ColumnsType } from 'antd/es/table';
 
@@ -90,11 +92,17 @@ const columns: ColumnsType<IDevDataResult> = [
 ];
 
 export const SectionTable: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <section>
       <div className={styles.title_box}>
         <Title level={3}>Список назначенных тестов:</Title>
-        <Button className={styles.btn} type="primary" icon={<ExperimentOutlined />}>
+        <Button
+          className={styles.btn}
+          type="primary"
+          icon={<ExperimentOutlined />}
+          onClick={() => setIsModalOpen(true)}>
           Назначить тестирование
         </Button>
       </div>
@@ -105,6 +113,11 @@ export const SectionTable: React.FC = () => {
         pagination={{ showSizeChanger: true }}
         rowKey={(record) => record.id}
         scroll={{ x: 640, y: 570 }}
+      />
+      <ModalAssignTesting
+        isModalOpen={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        onSuccessAssign={() => setIsModalOpen(false)}
       />
     </section>
   );

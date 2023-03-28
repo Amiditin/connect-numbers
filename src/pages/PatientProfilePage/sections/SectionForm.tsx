@@ -1,7 +1,12 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, message, Popconfirm, Space, Typography } from 'antd';
-import { DeleteOutlined, EditOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  QuestionCircleOutlined,
+  StopOutlined,
+} from '@ant-design/icons';
 
 import { FormPatient, type IFormPatientValues } from '@/components';
 import { devDataUser } from '../constants';
@@ -14,7 +19,15 @@ const { Title } = Typography;
 export const SectionForm: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [isEdited, setIsEdited] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.editing) {
+      setIsEdited(true);
+    }
+  }, []);
 
   const success = (loadingText: string, successText: string) => {
     messageApi
@@ -25,12 +38,14 @@ export const SectionForm: React.FC = () => {
       })
       .then(() => {
         message.success(successText, 2.5);
+        setIsLoading(false);
         setIsEdited(false);
       });
   };
 
   const handleEditPatient = (values: IFormPatientValues) => {
     console.log(values);
+    setIsLoading(true);
     success('Сохраняем изменения...', 'Изменения успешно сохранены!');
   };
 
@@ -53,10 +68,12 @@ export const SectionForm: React.FC = () => {
           <Button
             className={styles.btn}
             type="primary"
-            disabled={isEdited}
-            icon={<EditOutlined />}
-            onClick={() => setIsEdited(true)}>
-            Редактировать
+            icon={isEdited ? <StopOutlined /> : <EditOutlined />}
+            onClick={() => {
+              isEdited ? setIsEdited(false) : setIsEdited(true);
+            }}>
+            {/* TODO Добавить логику отмены */}
+            {isEdited ? 'Отменить' : 'Редактировать'}
           </Button>
           <Popconfirm
             title="Удалить профиль"
@@ -84,6 +101,7 @@ export const SectionForm: React.FC = () => {
           birthYear: +devDataUser.dateBirth.split('-')[0],
         }}
         disabled={!isEdited}
+        loading={isLoading}
         submitText={isEdited ? 'Сохранить' : ''}
         onSubmit={handleEditPatient}
       />

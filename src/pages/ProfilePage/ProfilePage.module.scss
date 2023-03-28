@@ -35,13 +35,17 @@
   display: flex;
   flex-direction: column;
 
-  .form_item {
+  .form {
     margin-top: 20px;
 
     .input {
       width: 280px;
+
     }
+
   }
+
+
 
   p {
     line-height: 17px;
