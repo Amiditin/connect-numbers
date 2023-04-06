@@ -1,0 +1,12 @@
+Dockerfile
+.dockerignore
+.gitignore
+.vscode
+.eslintrc
+.prettierrc
+generate-react-cli.json
+vercel.json
+
+# Создаются на стадии билда образа
+dist
+node_modules

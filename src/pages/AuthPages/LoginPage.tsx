@@ -22,7 +22,7 @@ export const LoginPage: React.FC = () => {
   const handleSubmit = (values: LoginForm) => {
     console.log(values);
 
-    // dispatch(authActions.loginUser({ email: values.email }));
+    dispatch(authActions.loginUser({ email: values.email }));
   };
 
   return (
