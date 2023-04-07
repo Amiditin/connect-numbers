@@ -1,11 +1,16 @@
-Dockerfile
+Dockerfile.dev
+Dockerfile.prod
+docker-compose.yml
 .dockerignore
 .gitignore
+.git
 .vscode
 .eslintrc
 .prettierrc
+README.md
 generate-react-cli.json
 vercel.json
+templates
 
 # Создаются на стадии билда образа
 dist

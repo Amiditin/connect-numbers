@@ -7,9 +7,7 @@
     "dev": "vite",
     "component": "generate-react component",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "docker-build": "docker build -t connect-numbers .",
-    "docker-run": "docker run --rm -p 8000:8000 connect-numbers"
+    "preview": "vite preview"
   },
   "engines": {
     "node": ">=15.0.0",
