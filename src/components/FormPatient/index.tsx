@@ -3,17 +3,14 @@ import clsx from 'clsx';
 
 import { typesSport } from '@/shared/constants';
 import { parsePhone } from '@/shared/utils';
-import { curYear, months, typesEducation } from './constants';
+import { curYear, months, typesEducation, typesGender } from './constants';
+
+import type { IPatientModel } from '@/shared/api/models';
 
 import styles from './FormPatient.module.scss';
 
-export interface IFormPatientValues {
-  fullname: string;
-  email: string;
-  phone: string;
-  gender: string;
-  education: string;
-  sport: string;
+export interface IFormPatientValues
+  extends Pick<IPatientModel, 'fullname' | 'email' | 'phone' | 'gender' | 'education' | 'sport'> {
   birthDay: number;
   birthMonth: number;
   birthYear: number;
@@ -68,13 +65,7 @@ export const FormPatient: React.FC<IFormPatientProps> = ({
             label="Пол"
             name="gender"
             rules={[{ required: true, message: 'Выберите пол' }]}>
-            <Select
-              placeholder="Мужской"
-              options={[
-                { value: 'male', label: 'Мужской' },
-                { value: 'female', label: 'Женский' },
-              ]}
-            />
+            <Select placeholder="Мужской" options={typesGender} />
           </Form.Item>
         </Col>
         <Col flex="1 1 320px">
@@ -148,10 +139,7 @@ export const FormPatient: React.FC<IFormPatientProps> = ({
             name="education"
             label="Образование"
             rules={[{ message: 'Выберите образование', required: true }]}>
-            <Select
-              placeholder="Общее"
-              options={typesEducation.map((type) => ({ value: type, label: type }))}
-            />
+            <Select placeholder="Общее" options={typesEducation} />
           </Form.Item>
         </Col>
         <Col flex="1 1 270px">

@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
 
+import { EEducationTypes, EGenderTypes } from '@/shared/api/services/patients/types';
+
 export const curYear = dayjs().year();
 
 export const months = [
@@ -17,9 +19,20 @@ export const months = [
   'Декабрь',
 ];
 
+export const typesGender = [
+  { value: EGenderTypes.MALE, label: 'Мужской' },
+  { value: EGenderTypes.FEMALE, label: 'Женский' },
+];
+
 export const typesEducation = [
-  'Основное общее',
-  'Среднее общее',
-  'Среднее профессиональное',
-  'Высшее образование',
+  { value: EEducationTypes.BASIC_GENERAL, label: EEducationTypes.BASIC_GENERAL },
+  {
+    value: EEducationTypes.SECONDARY_GENERAL,
+    label: EEducationTypes.SECONDARY_GENERAL,
+  },
+  {
+    value: EEducationTypes.SECONDARY_VOCATIONAL,
+    label: EEducationTypes.SECONDARY_VOCATIONAL,
+  },
+  { value: EEducationTypes.HIGHER, label: EEducationTypes.HIGHER },
 ];

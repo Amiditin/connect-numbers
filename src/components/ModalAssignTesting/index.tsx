@@ -1,6 +1,10 @@
-import { Modal, DatePicker, Divider, message, Form, Button, TimePicker, Row, Col } from 'antd';
-import { Dayjs } from 'dayjs';
 import { useState } from 'react';
+import { Modal, DatePicker, Divider, message, Form, Button, TimePicker, Row, Col } from 'antd';
+import dayjs, { Dayjs } from 'dayjs';
+
+import { resultsService } from '@/shared/api/services/results';
+
+import type { IResultModel } from '@/shared/api/models';
 
 import styles from './ModalAssignTesting.module.scss';
 
@@ -10,12 +14,14 @@ interface IFormAssignTesting {
 }
 
 interface IModalAssignTestingProps {
+  patientId: string;
   isModalOpen: boolean;
-  onSuccessAssign?: () => void;
+  onSuccessAssign?: (result: IResultModel) => void;
   onCancel?: () => void;
 }
 
 export const ModalAssignTesting: React.FC<IModalAssignTestingProps> = ({
+  patientId,
   isModalOpen,
   onCancel,
   onSuccessAssign = () => {},
@@ -23,24 +29,28 @@ export const ModalAssignTesting: React.FC<IModalAssignTestingProps> = ({
   const [messageApi, contextHolder] = message.useMessage();
   const [isLoading, setIsLoading] = useState(false);
 
-  const success = (loadingText: string, successText: string) => {
-    setIsLoading(true);
-    messageApi
-      .open({
-        type: 'loading',
-        content: loadingText,
-        duration: 2.5,
-      })
-      .then(() => {
-        message.success(successText, 2.5);
-        setIsLoading(false);
-        onSuccessAssign();
-      });
-  };
+  const handleAssignTesting = async (values: IFormAssignTesting) => {
+    try {
+      setIsLoading(true);
+      messageApi.open({ type: 'loading', content: 'Назначаем тестирование...', duration: 0 });
 
-  const handleAssignTesting = (values: IFormAssignTesting) => {
-    console.log(values);
-    success('Назначаем тестирование...', 'Тестирование успешно назначено!');
+      const date = values.dateTest.format().split('T')[0];
+
+      const dateStart = dayjs(`${date}T${values.timeTest[0].format().split('T')[1]}`).format();
+      const dateEnd = dayjs(`${date}T${values.timeTest[1].format().split('T')[1]}`).format();
+
+      const { data } = await resultsService.create({ dateEnd, dateStart, patient: patientId });
+
+      message.success('Тестирование успешно назначено!', 2);
+      messageApi.destroy();
+      setIsLoading(false);
+      onSuccessAssign(data);
+    } catch (error) {
+      messageApi.destroy();
+      setIsLoading(false);
+
+      message.error('Тестирование не было назначено!', 2);
+    }
   };
 
   return (
@@ -50,7 +60,6 @@ export const ModalAssignTesting: React.FC<IModalAssignTestingProps> = ({
       title="Назначить тестирование"
       footer={null}
       open={isModalOpen}
-      onOk={onSuccessAssign}
       onCancel={onCancel}>
       {contextHolder}
       <Divider />
@@ -63,7 +72,11 @@ export const ModalAssignTesting: React.FC<IModalAssignTestingProps> = ({
           label="Дата теста"
           name="dateTest"
           rules={[{ required: true, message: 'Выберите дату теста' }]}>
-          <DatePicker className={styles.form_item} format="DD.MM.YYYY" />
+          <DatePicker
+            className={styles.form_item}
+            disabledDate={(curDate: Dayjs) => curDate < dayjs().add(-1, 'day')}
+            format="DD.MM.YYYY"
+          />
         </Form.Item>
 
         <Form.Item

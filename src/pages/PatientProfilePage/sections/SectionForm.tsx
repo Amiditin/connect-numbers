@@ -1,27 +1,48 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, message, Popconfirm, Space, Typography } from 'antd';
-import {
-  DeleteOutlined,
-  EditOutlined,
-  QuestionCircleOutlined,
-  StopOutlined,
-} from '@ant-design/icons';
+import { useLocation } from 'react-router-dom';
+import { Button, message, Space, Typography } from 'antd';
+import { EditOutlined, StopOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
 
 import { FormPatient, type IFormPatientValues } from '@/components';
-import { devDataUser } from '../constants';
+import { DeleteProfile } from './DeleteProfile';
+import { useAppDispatch, useAppSelector } from '@/shared/hooks';
+import { getPatientsStatus, patientsThunks } from '@/redux/patients';
+import { extractNumbers } from '@/shared/utils';
+
+import type { IPatientModel } from '@/shared/api/models';
 
 import styles from '../PatientProfilePage.module.scss';
-import { routes } from '@/router';
 
 const { Title } = Typography;
 
-export const SectionForm: React.FC = () => {
+interface ISectionFormProps {
+  patient: IPatientModel;
+}
+
+export const SectionForm: React.FC<ISectionFormProps> = ({ patient }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [isEdited, setIsEdited] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch();
+
+  const patientsStatus = useAppSelector(getPatientsStatus);
+
+  useEffect(() => {
+    if (isLoading && patientsStatus === 'success') {
+      setIsLoading(false);
+      messageApi.destroy();
+      setIsEdited(false);
+      message.success('Изменения успешно сохранены!', 2);
+    }
+
+    if (isLoading && patientsStatus === 'error') {
+      setIsLoading(false);
+      messageApi.destroy();
+      message.error('Изменения не были сохранены!', 2);
+    }
+  }, [isLoading, patientsStatus]);
 
   useEffect(() => {
     if (location.state?.editing) {
@@ -29,34 +50,19 @@ export const SectionForm: React.FC = () => {
     }
   }, []);
 
-  const success = (loadingText: string, successText: string) => {
-    messageApi
-      .open({
-        type: 'loading',
-        content: loadingText,
-        duration: 2.5,
-      })
-      .then(() => {
-        message.success(successText, 2.5);
-        setIsLoading(false);
-        setIsEdited(false);
-      });
-  };
-
   const handleEditPatient = (values: IFormPatientValues) => {
-    console.log(values);
+    const { birthDay, birthMonth, birthYear, ...params } = values;
+
     setIsLoading(true);
-    success('Сохраняем изменения...', 'Изменения успешно сохранены!');
-  };
-
-  const handleDeletePatient = () => {
-    success('Удаляем профиль...', 'Пациент успешно удалён!');
-
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(null), 3000);
-    }).then(() => {
-      navigate(routes.patients.path);
-    });
+    messageApi.open({ type: 'loading', content: 'Сохраняем изменения...', duration: 0 });
+    dispatch(
+      patientsThunks.update({
+        ...params,
+        id: patient.id,
+        phone: extractNumbers(values.phone),
+        dateBirth: dayjs(`${birthYear}-${birthMonth}-${birthDay}`).format(),
+      }),
+    );
   };
 
   return (
@@ -75,30 +81,15 @@ export const SectionForm: React.FC = () => {
             {/* TODO Добавить логику отмены */}
             {isEdited ? 'Отменить' : 'Редактировать'}
           </Button>
-          <Popconfirm
-            title="Удалить профиль"
-            description="Вы уверены, что хотите удалить этого пациента?"
-            okText="Удалить"
-            okType="danger"
-            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-            onConfirm={handleDeletePatient}>
-            <Button
-              className={styles.btn}
-              danger
-              type="primary"
-              disabled={isEdited}
-              icon={<DeleteOutlined />}>
-              Удалить
-            </Button>
-          </Popconfirm>
+          <DeleteProfile patientId={patient.id} isEdited={isEdited} />
         </Space>
       </div>
       <FormPatient
         initialValues={{
-          ...devDataUser,
-          birthDay: +devDataUser.dateBirth.split('-')[2],
-          birthMonth: +devDataUser.dateBirth.split('-')[1],
-          birthYear: +devDataUser.dateBirth.split('-')[0],
+          ...patient,
+          birthDay: +patient.dateBirth.slice(8, 10),
+          birthMonth: +patient.dateBirth.split('-')[1],
+          birthYear: +patient.dateBirth.split('-')[0],
         }}
         disabled={!isEdited}
         loading={isLoading}

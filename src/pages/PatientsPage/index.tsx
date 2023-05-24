@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Dropdown, Space, Table, Typography, Input, DatePicker } from 'antd';
 import {
@@ -15,10 +15,12 @@ import dayjs from 'dayjs';
 import { ModalAddPatient, ModalAssignTesting } from '@/components';
 import { routes } from '@/router';
 import { calculateAge, parseDate } from '@/shared/utils';
-import { devData, type IDevDataItem } from './constants';
+import { useAppDispatch, useAppSelector } from '@/shared/hooks';
+import { getPatientsItems, getPatientsStatus, patientsThunks } from '@/redux/patients';
 
 import type { InputRef } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import type { IPatientModel } from '@/shared/api/models';
 
 import styles from './PatientsPage.module.scss';
 
@@ -26,23 +28,37 @@ type TCurOpenModal = 'addPatient' | 'assignTesting' | null;
 
 const { Title } = Typography;
 
-const typesSport = devData
-  .reduce((sports: string[], item) => {
-    if (!sports.includes(item.sport)) {
-      sports.push(item.sport);
-    }
-
-    return sports;
-  }, [])
-  .sort();
-
 export const PatientsPage: React.FC = () => {
   const [curOpenModal, setCurOpenModal] = useState<TCurOpenModal>(null);
+  const [curActivePatientId, setCurActivePatientId] = useState('');
   const [lastTestFilterValues, setLastTestFilterValues] = useState<[string, string]>(['', '']);
   const searchInput = useRef<InputRef>(null);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const columns: ColumnsType<IDevDataItem> = useMemo(
+  useEffect(() => {
+    dispatch(patientsThunks.findAll());
+  }, []);
+
+  const patientsItems = useAppSelector(getPatientsItems);
+  const patientsStatus = useAppSelector(getPatientsStatus);
+
+  const typesSport = useMemo(
+    () =>
+      patientsItems
+        .reduce((sports: string[], item) => {
+          if (!sports.includes(item.sport)) {
+            sports.push(item.sport);
+          }
+
+          return sports;
+        }, [])
+        .sort()
+        .map((sport) => ({ text: sport, value: sport })),
+    [patientsItems],
+  );
+
+  const columns: ColumnsType<IPatientModel> = useMemo(
     () => [
       {
         title: 'Фамилия Имя Отчество',
@@ -114,7 +130,8 @@ export const PatientsPage: React.FC = () => {
         dataIndex: 'dateLastTest',
         width: '180px',
         key: 'dateLastTest',
-        sorter: (a, b) => (Date.parse(a.dateLastTest) < Date.parse(b.dateLastTest) ? -1 : 1),
+        sorter: (a, b) =>
+          Date.parse(a.dateLastTest || '0') < Date.parse(b.dateLastTest || '0') ? -1 : 1,
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
           <div className={styles.filter_search} onKeyDown={(e) => e.stopPropagation()}>
             <DatePicker.RangePicker
@@ -168,7 +185,7 @@ export const PatientsPage: React.FC = () => {
             dayjs(record.dateLastTest) < dayjs(lastTestFilterValues[1])
           );
         },
-        render: (dateLastTest: string) => parseDate(dateLastTest),
+        render: (dateLastTest: string) => parseDate(dateLastTest) || 'Нет результатов',
       },
       {
         title: 'Вид спорта',
@@ -176,7 +193,7 @@ export const PatientsPage: React.FC = () => {
         key: 'sport',
         width: '250px',
         filterSearch: true,
-        filters: typesSport.map((sport) => ({ text: sport, value: sport })),
+        filters: typesSport,
         onFilter: (value, record) => record.sport === value,
       },
       {
@@ -215,7 +232,10 @@ export const PatientsPage: React.FC = () => {
                   key: 'assignTesting',
                   label: 'Назначить тест',
                   icon: <ExperimentOutlined />,
-                  onClick: () => setCurOpenModal('assignTesting'),
+                  onClick: () => {
+                    setCurOpenModal('assignTesting');
+                    setCurActivePatientId(record.id);
+                  },
                 },
               ],
             }}>
@@ -235,8 +255,6 @@ export const PatientsPage: React.FC = () => {
           Список пациентов
         </Title>
         <Button
-          // Todo убрать класс
-          className={styles.btn_add}
           onClick={() => setCurOpenModal('addPatient')}
           type="primary"
           size="large"
@@ -247,7 +265,8 @@ export const PatientsPage: React.FC = () => {
       {/* Todo декомпозировать таблицу */}
       <Table
         className={styles.table}
-        dataSource={devData}
+        dataSource={patientsItems}
+        loading={patientsStatus === 'loading'}
         columns={columns}
         pagination={{ showSizeChanger: true }}
         rowKey={(record) => record.id}
@@ -259,6 +278,7 @@ export const PatientsPage: React.FC = () => {
         onSuccessAdd={() => setCurOpenModal(null)}
       />
       <ModalAssignTesting
+        patientId={curActivePatientId}
         isModalOpen={curOpenModal === 'assignTesting'}
         onCancel={() => setCurOpenModal(null)}
         onSuccessAssign={() => setCurOpenModal(null)}

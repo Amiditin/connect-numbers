@@ -1,54 +1,14 @@
 @import '/src/shared/scss/_variables.scss';
 
-.content {
-  width: 100%;
-  padding: 40px 15px 20px;
-}
-
-.full_name {
-  display: flex;
-
-  .avatar {
-    background-color: #1677ff;
-    margin-right: 24px;
-  }
-
-  h3 {
-    width: 288px;
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 29px;
-    color: $color-title;
-  }
-
-  h4 {
-    word-spacing: 30px;
-    font-weight: 400;
-    line-height: 20px;
-    color: $color-title;
-  }
-}
-
-.edit {
-  width: 808px;
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-
-  .form {
-    margin-top: 20px;
-
-    .input {
-      width: 280px;
-
+.profile {
+  .info {
+    .title {
+      display: flex;
     }
 
-  }
-
-
-
-  p {
-    line-height: 17px;
-    color: #333333;
+    .avatar {
+      background-color: #1677ff;
+      margin-right: 18px;
+    }
   }
 }

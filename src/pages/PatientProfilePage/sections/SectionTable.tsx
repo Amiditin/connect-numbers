@@ -1,14 +1,17 @@
 import { useState } from 'react';
-import { Button, Table, Typography } from 'antd';
-import { ExperimentOutlined } from '@ant-design/icons';
+import { Button, Space, Table, Typography } from 'antd';
+import { ExperimentOutlined, LinkOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 
-import { devDataResult, type IDevDataResult } from '../constants';
 import { ModalAssignTesting } from '@/components';
+import { routes } from '@/router';
 
+import type { IPatientModel, IResultModel } from '@/shared/api/models';
 import type { ColumnsType } from 'antd/es/table';
 
 import styles from '../PatientProfilePage.module.scss';
+import { DeleteResult } from './DeleteResult';
 
 const sortByTime = (time1: string | null, time2: string | null) => {
   const t1 = time1?.split(':').map((v) => +v) || [0, 0];
@@ -17,9 +20,9 @@ const sortByTime = (time1: string | null, time2: string | null) => {
   return t1[0] * 60 + t1[1] < t2[0] * 60 + t2[1] ? 1 : -1;
 };
 
-const getSumTime = (time1: string, time2: string) => {
-  const t1 = time1.split(':').map((v) => +v);
-  const t2 = time2.split(':').map((v) => +v);
+const getSumTime = (time1: string | null, time2: string | null) => {
+  const t1 = (time1 || '0:00').split(':').map((v) => +v);
+  const t2 = (time2 || '0:00').split(':').map((v) => +v);
 
   const sum = (t1[0] + t2[0]) * 60 + t1[1] + t2[1];
 
@@ -29,16 +32,33 @@ const getSumTime = (time1: string, time2: string) => {
   return `${min > 9 ? min : `0${min}`}:${sec > 9 ? sec : `0${sec}`}`;
 };
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
-const columns: ColumnsType<IDevDataResult> = [
+console.log(dayjs('2023-05-22T16:00:00.000Z').format());
+
+// "2023-05-22T16:00:00.000Z"
+const columns: ColumnsType<IResultModel> = [
   {
     title: 'Дата начала - конца',
     key: 'dateStartEnd',
     width: '260px',
-    render: (_, record) =>
-      dayjs(record.dateStart).locale('ru').format('DD MMMM YYYY с HH:mm ') +
-      dayjs(record.dateEnd).format('до HH:mm'),
+    render: (_, record) => (
+      <div className={styles.date_start_end}>
+        {dayjs(record.dateStart).locale('ru').format('DD MMMM YYYY с HH:mm ') +
+          dayjs(record.dateEnd).format('до HH:mm')}
+        <Paragraph
+          copyable={{
+            text: `http://localhost:3000/test/${record.id}`,
+            icon: [
+              <LinkOutlined key="copy-icon" />,
+              <LinkOutlined key="copied-icon" style={{ color: 'blue' }} />,
+            ],
+            tooltips: ['Скопировать ссылку', 'Скопировано!'],
+          }}
+        />
+        <DeleteResult resultId={record.id} />
+      </div>
+    ),
   },
   {
     title: 'Затраченное время (мм:сс)',
@@ -91,8 +111,15 @@ const columns: ColumnsType<IDevDataResult> = [
   },
 ];
 
-export const SectionTable: React.FC = () => {
+interface ISectionTableProps {
+  patient: IPatientModel;
+}
+
+export const SectionTable: React.FC<ISectionTableProps> = ({ patient }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  console.log(patient);
 
   return (
     <section>
@@ -108,16 +135,23 @@ export const SectionTable: React.FC = () => {
       </div>
       <Table
         className={styles.table}
-        dataSource={devDataResult}
+        dataSource={patient.results}
         columns={columns}
         pagination={{ showSizeChanger: true }}
         rowKey={(record) => record.id}
         scroll={{ x: 640, y: 570 }}
       />
       <ModalAssignTesting
+        patientId={patient.id}
         isModalOpen={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
-        onSuccessAssign={() => setIsModalOpen(false)}
+        onSuccessAssign={() => {
+          setIsModalOpen(false);
+
+          if (routes.patientProfile.getPath) {
+            navigate(routes.patientProfile.getPath(patient.id));
+          }
+        }}
       />
     </section>
   );

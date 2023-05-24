@@ -1,7 +1,7 @@
 export interface IConnectNumbersTest {
   number: number;
   completed: boolean;
-  time: number | null;
+  time: string | null;
   withLetters: boolean;
   isOptional: boolean;
   numberItems: number;

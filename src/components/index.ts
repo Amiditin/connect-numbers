@@ -1,6 +1,7 @@
 export * from './ErrorBoundary';
 export * from './FormOrganization';
 export * from './FormPatient';
+export * from './FormResearcher';
 export * from './ModalAddOrganization';
 export * from './ModalAddPatient';
 export * from './ModalAssignTesting';

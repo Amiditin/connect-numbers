@@ -4,7 +4,7 @@ import { CloseOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 
 import { routes } from '@/router';
 import { useAppDispatch } from '@/shared/hooks';
-import { authActions } from '@/redux/auth';
+import { authThunks } from '@/redux/auth';
 
 import styles from './AuthPages.module.scss';
 
@@ -13,7 +13,7 @@ const { Title, Text } = Typography;
 interface LoginForm {
   email: string;
   password: string;
-  remember?: boolean;
+  remember: boolean;
 }
 
 export const LoginPage: React.FC = () => {
@@ -22,7 +22,7 @@ export const LoginPage: React.FC = () => {
   const handleSubmit = (values: LoginForm) => {
     console.log(values);
 
-    dispatch(authActions.loginUser({ email: values.email }));
+    dispatch(authThunks.login(values));
   };
 
   return (
@@ -78,11 +78,6 @@ export const LoginPage: React.FC = () => {
           </Button>
         </Link>
       </Space.Compact>
-      <Link to={routes.testRoot.path}>
-        <Button className={styles.button} type="primary" size="large">
-          Пройти тестирование
-        </Button>
-      </Link>
     </Space>
   );
 };

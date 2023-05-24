@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 interface IStopwatchProps {
   interval: number;
   status: 'paused' | 'started' | 'stopped';
-  getTime: (time: number) => any;
+  getTime: (time: string) => any;
 }
 
 export const Stopwatch: React.FC<IStopwatchProps> = ({ interval, status, getTime }) => {
@@ -20,7 +20,7 @@ export const Stopwatch: React.FC<IStopwatchProps> = ({ interval, status, getTime
 
     const handleFinish = () => {
       clearInterval(timerRef.current);
-      getTime(+timer.toFixed(1));
+      getTime(timer.toFixed(1));
     };
 
     switch (status) {

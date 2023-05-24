@@ -1,27 +1,47 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import type { IAuthState, IUser } from './types';
+import { authThunks } from './thunks';
+
+import type { IAuthState } from './types';
 
 const initialState: IAuthState = {
   user: null,
-  isAuth: false,
-};
-
-const devInitialState: IAuthState = {
-  user: { email: 'dev@email.com' },
-  isAuth: true,
+  status: 'init',
 };
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: initialState,
+  initialState,
   reducers: {
-    loginUser: (state: IAuthState, { payload }: PayloadAction<IUser>) => {
-      state.user = payload;
-      state.isAuth = true;
+    logout(state: IAuthState) {
+      state.user = null;
+
+      localStorage.removeItem('token');
     },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder.addCase(authThunks.login.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(authThunks.login.fulfilled, (state, { payload }) => {
+      state.user = payload;
+      state.status = 'success';
+    });
+    builder.addCase(authThunks.login.rejected, (state) => {
+      state.status = 'error';
+    });
+
+    builder.addCase(authThunks.profile.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(authThunks.profile.fulfilled, (state, { payload }) => {
+      state.user = payload;
+      state.status = 'success';
+    });
+    builder.addCase(authThunks.profile.rejected, (state) => {
+      state.status = 'error';
+    });
+  },
 });
 
-export const { actions: authActions, reducer: authReducer } = authSlice;
+export const { actions: authActions, reducer: authReducer, name: authName } = authSlice;

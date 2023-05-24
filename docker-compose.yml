@@ -1,15 +1,9 @@
 version: "3.8"
 
 services:
-  dev:
-    build:
-      context: ./
-      dockerfile: Dockerfile.dev
-    ports:
-      - "3000:3000"
   prod:
     build:
       context: ./
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     ports:
       - "8000:80"

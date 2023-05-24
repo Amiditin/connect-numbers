@@ -1,28 +1,38 @@
+import { useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 
-import { useAppSelector, usePageTitles } from '@/shared/hooks';
-import { getAuth } from '@/redux/auth';
+import { useAppDispatch, useAppSelector, usePageTitles } from '@/shared/hooks';
+import { authThunks, getAuthStatus, getAuthUser } from '@/redux/auth';
 import { routes } from '@/router';
-import { useEffect } from 'react';
 
 export const MainLayout: React.FC = () => {
-  const auth = useAppSelector(getAuth);
-  const navigate = useNavigate();
   usePageTitles(routes);
 
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const authUser = useAppSelector(getAuthUser);
+  const authStatus = useAppSelector(getAuthStatus);
+
   useEffect(() => {
-    if (!auth.isAuth) {
+    dispatch(authThunks.profile());
+  }, []);
+
+  useEffect(() => {
+    if (!authUser) {
       navigate(routes.authLogin.path);
       return;
     }
 
-    if (auth.isAuth === true && auth.user?.email === 'admin@admin.ru') {
+    // Todo: Роль админа
+    if (authUser && authUser?.email === 'admin@admin.ru') {
       navigate(routes.adminRoot.path);
       return;
     }
 
     navigate(routes.profile.path);
-  }, [auth]);
+  }, [authUser]);
 
+  // Todo: При первом рендере белый экран
   return <Outlet />;
 };

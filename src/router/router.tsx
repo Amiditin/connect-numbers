@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
   },
   { path: routes.notFound.path, element: <NotFoundPage /> },
   {
-    path: routes.testRoot.path,
+    path: routes.testPatient.path,
     element: <PatientTestPage />,
     errorElement: <ErrorBoundary />,
   },

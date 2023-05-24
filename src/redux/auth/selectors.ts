@@ -1,9 +1,13 @@
+import { createSelector } from '@reduxjs/toolkit';
+
 import type { TRootState } from '@/redux/types';
 
-export const getAuth = (store: TRootState) => {
-  return store.auth;
-};
+const getAuth = (state: TRootState) => state.auth;
 
-export const getIsAuth = (store: TRootState) => {
-  return store.auth.isAuth;
-};
+export const getAuthUser = createSelector(getAuth, (auth) => {
+  return auth.user;
+});
+
+export const getAuthStatus = createSelector(getAuth, (auth) => {
+  return auth.status;
+});

@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Divider, message, Modal } from 'antd';
+import dayjs from 'dayjs';
 
-import { FormPatient, IFormPatientValues } from '../FormPatient';
+import { FormPatient, IFormPatientValues } from '@/components';
+import { useAppDispatch, useAppSelector } from '@/shared/hooks';
+import { getPatientsStatus, patientsThunks } from '@/redux/patients';
+import { getAuthUser } from '@/redux/auth';
+import { extractNumbers } from '@/shared/utils';
 
 import styles from './ModalAddPatient.module.scss';
+
 interface IModalAddPatientProps {
   isModalOpen: boolean;
   onCancel?: () => void;
@@ -15,27 +21,45 @@ export const ModalAddPatient: React.FC<IModalAddPatientProps> = ({
   onCancel,
   onSuccessAdd = () => {},
 }) => {
-  const [messageApi, contextHolder] = message.useMessage();
-  const [isLoading, setIsLoading] = useState(false);
+  const user = useAppSelector(getAuthUser);
 
-  const success = (loadingText: string, successText: string) => {
-    setIsLoading(true);
-    messageApi
-      .open({
-        type: 'loading',
-        content: loadingText,
-        duration: 2.5,
-      })
-      .then(() => {
-        message.success(successText, 2.5);
-        setIsLoading(false);
-        onSuccessAdd();
-      });
-  };
+  if (!user) {
+    return null;
+  }
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+  const dispatch = useAppDispatch();
+  const patientsStatus = useAppSelector(getPatientsStatus);
+
+  useEffect(() => {
+    if (isLoading && patientsStatus === 'success') {
+      setIsLoading(false);
+      messageApi.destroy();
+      message.success('Пациент успешно добавлен!', 2);
+      onSuccessAdd();
+    }
+
+    if (isLoading && patientsStatus === 'error') {
+      setIsLoading(false);
+      messageApi.destroy();
+      message.error('Пациент не был добавлен!', 2);
+    }
+  }, [isLoading, patientsStatus]);
 
   const handleAddPatient = (values: IFormPatientValues) => {
-    console.log(values);
-    success('Добавляем пациента...', 'Пациент успешно добавлен!');
+    const { birthDay, birthMonth, birthYear, ...params } = values;
+
+    setIsLoading(true);
+    messageApi.open({ type: 'loading', content: 'Добавляем пациента...', duration: 0 });
+    dispatch(
+      patientsThunks.create({
+        ...params,
+        dateBirth: dayjs(`${birthYear}-${birthMonth}-${birthDay}`).format(),
+        researcher: user.id,
+        phone: extractNumbers(values.phone),
+      }),
+    );
   };
 
   return (

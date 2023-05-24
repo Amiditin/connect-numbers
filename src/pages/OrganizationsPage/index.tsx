@@ -188,11 +188,6 @@ export const OrganizationsPage: React.FC = () => {
         rowKey={(record) => record.id}
         scroll={{ x: 740, y: 730 }}
       />
-      <ModalAssignTesting
-        isModalOpen={curOpenModal === 'assignTesting'}
-        onCancel={() => setCurOpenModal(null)}
-        onSuccessAssign={() => setCurOpenModal(null)}
-      />
       <ModalAddOrganization
         isModalOpen={curOpenModal === 'addOrganization'}
         onCancel={() => setCurOpenModal(null)}
