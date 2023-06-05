@@ -15,6 +15,7 @@ interface IConnectNumbersTestProps {
   setTestStatus: React.Dispatch<React.SetStateAction<TTestStatus>>;
   test: IConnectNumbersTest;
   testStatus: TTestStatus;
+  lang: 'en' | 'ru';
 }
 
 export const ConnectNumbersTest: React.FC<IConnectNumbersTestProps> = ({
@@ -22,6 +23,7 @@ export const ConnectNumbersTest: React.FC<IConnectNumbersTestProps> = ({
   setTestStatus,
   test,
   testStatus,
+  lang,
 }) => {
   const [matrixItems, setMatrixItems] = useState<IMatrixItem[]>([]);
   const { width, height, circleRadius }: IMatrixOptions = useMemo(
@@ -37,7 +39,7 @@ export const ConnectNumbersTest: React.FC<IConnectNumbersTestProps> = ({
 
   useEffect(() => {
     setMatrixItems(
-      getMatrixItems(test).map((item) => ({
+      getMatrixItems({ ...test, lang }).map((item) => ({
         coordX: Math.round((item.coordX * width) / matrixDefaultOptions.width) - circleRadius,
         coordY: Math.round((item.coordY * height) / matrixDefaultOptions.height) - circleRadius,
         active: item.active,

@@ -12,6 +12,7 @@ export interface IGetMatrixItemsOptions {
   withLetters?: boolean;
   numberItems?: number;
   matrixOptions?: IMatrixOptions;
+  lang?: 'en' | 'ru';
 }
 
 export interface IInterval {

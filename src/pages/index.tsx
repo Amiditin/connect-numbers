@@ -6,3 +6,4 @@ export * from './PatientsPage';
 export * from './ProfilePage';
 export * from './OrganizationsPage';
 export * from './PatientTestPage';
+export * from './ResearchersPage';

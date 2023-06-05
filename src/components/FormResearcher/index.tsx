@@ -10,7 +10,8 @@ import type { IOrganizationModel, IResearcherModel } from '@/shared/api/models';
 
 import styles from './FormResearcher.module.scss';
 
-interface IFormResearcherValues extends Pick<IResearcherModel, 'fullname' | 'email' | 'phone'> {
+export interface IFormResearcherValues
+  extends Pick<IResearcherModel, 'fullname' | 'email' | 'phone'> {
   password: string;
   confirm: string;
   organization: string;

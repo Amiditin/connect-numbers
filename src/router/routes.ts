@@ -6,7 +6,7 @@ interface IRoute {
 
 export type TRoutes = Record<string, IRoute>;
 
-export const routes: TRoutes = {
+export const routes = {
   root: {
     path: '/',
   },

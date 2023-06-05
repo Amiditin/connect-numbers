@@ -10,12 +10,16 @@ export interface IOrganizationModel extends IDefaultModel {
   website: string | null;
 }
 
+export type TOrganizationCreate = Omit<IOrganizationModel, keyof IDefaultModel>;
+
+export type TOrganizationUpdate = IModelId & Partial<IOrganizationModel>;
+
 export interface IOrganizationsService {
   findAll: TAxiosRequest<void, IOrganizationModel[]>;
 
-  create: TAxiosRequest<Omit<IOrganizationModel, keyof IDefaultModel>, IOrganizationModel>;
+  create: TAxiosRequest<TOrganizationCreate, IOrganizationModel>;
 
-  update: TAxiosRequest<IModelId & Partial<IOrganizationModel>, undefined>;
+  update: TAxiosRequest<TOrganizationUpdate, undefined>;
 
   remove: TAxiosRequest<IModelId, undefined>;
 }

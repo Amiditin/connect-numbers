@@ -60,11 +60,11 @@ export const LoginPage: React.FC = () => {
           <Form.Item className={styles.remember} name="remember" valuePropName="checked">
             <Checkbox>Запомнить меня</Checkbox>
           </Form.Item>
-          <Link to={routes.authForgotPassword.path}>
+          {/* <Link to={routes.authForgotPassword.path}>
             <Button className={styles.button_link} type="link">
               Забыли пароль?
             </Button>
-          </Link>
+          </Link> */}
         </Space.Compact>
         <Button className={styles.button} type="primary" htmlType="submit">
           Войти в аккаунт

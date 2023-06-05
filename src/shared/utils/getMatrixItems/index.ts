@@ -5,7 +5,10 @@ import type { IGetMatrixItemsOptions, IInterval, IIntervalOptions, IMatrixItem }
 
 const COF_MAX_RADIUS = 0.3;
 const DISTANCE_FROM_BORDERS = 30;
-const LETTERS = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'.split('');
+const LETTERS = {
+  ru: 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'.split(''),
+  en: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+};
 
 type TGetMatrixItems = (options: IGetMatrixItemsOptions) => IMatrixItem[];
 
@@ -13,6 +16,7 @@ export const getMatrixItems: TGetMatrixItems = ({
   withLetters = false,
   numberItems = 24,
   matrixOptions = matrixDefaultOptions,
+  lang = 'ru',
 }) => {
   const { circleRadius, height, width } = matrixOptions;
   const minDistance = circleRadius + DISTANCE_FROM_BORDERS;
@@ -81,7 +85,7 @@ export const getMatrixItems: TGetMatrixItems = ({
     let text = String(i + 1);
 
     if (withLetters) {
-      text = i % 2 === 0 ? String(i / 2 + 1) : LETTERS[Math.floor(i / 2)];
+      text = i % 2 === 0 ? String(i / 2 + 1) : LETTERS[lang][Math.floor(i / 2)];
     }
 
     matrixItems.push({

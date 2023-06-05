@@ -14,6 +14,7 @@ import {
   PatientTestPage,
   ProfilePage,
   RegisterPage,
+  ResearchersPage,
 } from '@/pages';
 
 export const router = createBrowserRouter([
@@ -23,22 +24,22 @@ export const router = createBrowserRouter([
     errorElement: <ErrorBoundary />,
     children: [
       {
-        element: <ResearcherLayout />,
+        path: routes.adminRoot.path,
+        element: <AdminLayout />,
+        children: [
+          { path: routes.organizations.path, element: <OrganizationsPage /> },
+          { path: routes.researchers.path, element: <ResearchersPage /> },
+        ],
+      },
+      {
         path: routes.root.path,
+        element: <ResearcherLayout />,
         children: [
           { index: true, element: <HomePage /> },
           { path: routes.profile.path, element: <ProfilePage /> },
           { path: routes.patients.path, element: <PatientsPage /> },
           { path: routes.patientProfile.path, element: <PatientProfilePage /> },
           { path: routes.organizations.path, element: <OrganizationsPage /> },
-        ],
-      },
-      {
-        element: <AdminLayout />,
-        path: routes.adminRoot.path,
-        children: [
-          { path: routes.organizations.path, element: <OrganizationsPage /> },
-          // { path: routes.researchers.path },
         ],
       },
       {

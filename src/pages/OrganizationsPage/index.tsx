@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Dropdown, Input, Space, Table, Typography } from 'antd';
+import { Button, Dropdown, Input, message, Popconfirm, Space, Table, Typography } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -11,29 +11,66 @@ import {
   TeamOutlined,
 } from '@ant-design/icons';
 
-import { ModalAddOrganization, ModalAssignTesting, ModalEditOrganization } from '@/components';
+import { ModalAddOrganization, ModalEditOrganization } from '@/components';
+import { useAppDispatch, useAppSelector } from '@/shared/hooks';
+import {
+  getOrganizationsItems,
+  getOrganizationsStatus,
+  organizationsThunks,
+} from '@/redux/organizations';
 import { parsePhone } from '@/shared/utils';
-import { devData, type IDevDataItem } from './constants';
 import { routes } from '@/router';
 
 import type { InputRef } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
+import type { IOrganizationModel } from '@/shared/api/models';
 
 import styles from './OrganizationsPage.module.scss';
 
-type TCurOpenModal = 'addOrganization' | 'assignTesting' | 'editOrganization' | null;
-type DevDataKeys = keyof IDevDataItem;
+type TCurOpenModal = 'addOrganization' | 'deleteOrganization' | 'editOrganization' | null;
 
 const { Title } = Typography;
 
 export const OrganizationsPage: React.FC = () => {
   const [curOpenModal, setCurOpenModal] = useState<TCurOpenModal>(null);
-  const [curEditedOrganization, setCurEditedOrganization] = useState<IDevDataItem>();
+  const [curEditedOrganization, setCurEditedOrganization] = useState<IOrganizationModel>();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [isLoading, setIsLoading] = useState(false);
   const searchInput = useRef<InputRef>(null);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const getColumnSearchProps = (dataKey: DevDataKeys): ColumnType<IDevDataItem> => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+  const organizations = useAppSelector(getOrganizationsItems);
+  const organizationsStatus = useAppSelector(getOrganizationsStatus);
+
+  useEffect(() => {
+    dispatch(organizationsThunks.findAll());
+  }, []);
+
+  useEffect(() => {
+    if (isLoading && organizationsStatus === 'success') {
+      setIsLoading(false);
+      messageApi.destroy();
+      message.success('Организация удалена!', 2);
+    }
+
+    if (isLoading && organizationsStatus === 'error') {
+      setIsLoading(false);
+      messageApi.destroy();
+      message.error('Организация не была удалена!', 2);
+    }
+  }, [isLoading, organizationsStatus]);
+
+  const handleDeleteOrganization = (id: string) => {
+    setIsLoading(true);
+    messageApi.open({ type: 'loading', content: 'Удаляем организацию...', duration: 0 });
+    dispatch(organizationsThunks.remove({ id }));
+  };
+
+  const getColumnSearchProps = (
+    dataKey: keyof IOrganizationModel,
+  ): ColumnType<IOrganizationModel> => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div className={styles.filter_search} onKeyDown={(e) => e.stopPropagation()}>
         <Input
           className={styles.input}
@@ -65,7 +102,7 @@ export const OrganizationsPage: React.FC = () => {
       return <SearchOutlined className={filtered ? styles.search_icon_filtered : ''} />;
     },
     onFilter: (value, record) => {
-      return record[dataKey].toLowerCase().includes((value as string).toLowerCase());
+      return record[dataKey]?.toLowerCase().includes((value as string).toLowerCase()) || false;
     },
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
@@ -74,7 +111,7 @@ export const OrganizationsPage: React.FC = () => {
     },
   });
 
-  const columns: ColumnsType<IDevDataItem> = [
+  const columns: ColumnsType<IOrganizationModel> = [
     {
       title: 'Кратное название',
       dataIndex: 'abbreviation',
@@ -91,10 +128,10 @@ export const OrganizationsPage: React.FC = () => {
     },
     {
       title: 'Контактное лицо',
-      dataIndex: 'contactFace',
-      key: 'contactFace',
+      dataIndex: 'contact',
+      key: 'contact',
       width: '300px',
-      ...getColumnSearchProps('contactFace'),
+      ...getColumnSearchProps('contact'),
     },
     {
       title: 'Адрес',
@@ -124,6 +161,11 @@ export const OrganizationsPage: React.FC = () => {
       key: 'website',
       width: '180px',
       ...getColumnSearchProps('website'),
+      render: (_, record) => (
+        <a href={`https://$${record.website}`} target="_blank">
+          {record.website}
+        </a>
+      ),
     },
     {
       className: styles.actions,
@@ -155,6 +197,7 @@ export const OrganizationsPage: React.FC = () => {
                 key: 'Delete',
                 label: 'Удалить',
                 danger: true,
+                onClick: () => handleDeleteOrganization(record.id),
                 icon: <DeleteOutlined />,
               },
             ],
@@ -167,6 +210,7 @@ export const OrganizationsPage: React.FC = () => {
 
   return (
     <div className={styles.organizations}>
+      {contextHolder}
       <Space className={styles.space} wrap>
         <Title className={styles.title} level={2}>
           <LineOutlined className={styles.line_icon} />
@@ -182,7 +226,7 @@ export const OrganizationsPage: React.FC = () => {
       </Space>
       <Table
         className={styles.table}
-        dataSource={devData}
+        dataSource={organizations}
         columns={columns}
         pagination={{ showSizeChanger: true }}
         rowKey={(record) => record.id}
@@ -195,9 +239,12 @@ export const OrganizationsPage: React.FC = () => {
       />
       <ModalEditOrganization
         isModalOpen={curOpenModal === 'editOrganization'}
-        onCancel={() => setCurOpenModal(null)}
+        onCancel={() => {
+          setCurOpenModal(null);
+          setCurEditedOrganization(undefined);
+        }}
         onSuccessEdit={() => setCurOpenModal(null)}
-        initialValues={curEditedOrganization}
+        organization={curEditedOrganization}
       />
     </div>
   );

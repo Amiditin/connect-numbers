@@ -91,12 +91,7 @@ export const ResearcherLayout: React.FC = () => {
     <Layout>
       <Header className={styles.header}>
         <div className={styles.header_content}>
-          <img
-            className={styles.logo}
-            src={MainLogo}
-            alt="Logo"
-            onClick={() => navigate(routes.home.path)}
-          />
+          <img className={styles.logo} src={MainLogo} alt="Logo" />
           <Menu
             className={styles.menu}
             theme="dark"

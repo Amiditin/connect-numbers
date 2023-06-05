@@ -1,38 +1,41 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector, usePageTitles } from '@/shared/hooks';
-import { authThunks, getAuthStatus, getAuthUser } from '@/redux/auth';
+import { authThunks, getAuthUser } from '@/redux/auth';
 import { routes } from '@/router';
+import { Spin } from 'antd';
 
 export const MainLayout: React.FC = () => {
   usePageTitles(routes);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const authUser = useAppSelector(getAuthUser);
-  const authStatus = useAppSelector(getAuthStatus);
 
   useEffect(() => {
-    dispatch(authThunks.profile());
+    dispatch(authThunks.profile()).finally(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {
-    if (!authUser) {
-      navigate(routes.authLogin.path);
-      return;
-    }
+    if (!isLoading) {
+      if (!authUser) {
+        navigate(routes.authLogin.path);
+        return;
+      }
+      // Todo: Роль админа
+      if (authUser && authUser?.email === 'admin@mail.ru') {
+        navigate(routes.organizations.path);
+        return;
+      }
 
-    // Todo: Роль админа
-    if (authUser && authUser?.email === 'admin@admin.ru') {
-      navigate(routes.adminRoot.path);
-      return;
+      navigate(routes.profile.path);
     }
-
-    navigate(routes.profile.path);
   }, [authUser]);
 
   // Todo: При первом рендере белый экран
-  return <Outlet />;
+  return isLoading ? <Spin tip="Загрузка" size="large" style={{ height: '100vh' }} /> : <Outlet />;
 };

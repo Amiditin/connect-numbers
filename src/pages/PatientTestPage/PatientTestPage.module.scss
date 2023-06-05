@@ -7,6 +7,7 @@
   }
 
   .content {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -29,6 +30,16 @@
     @include media-breakpoint-down(xs) {
       padding: 24px 12px;
     }
+  }
+
+  .title {
+    margin-top: 15px;
+  }
+
+  .radio_lang {
+    position: absolute;
+    right: 10px;
+    top: 10px;
   }
 
   .box {

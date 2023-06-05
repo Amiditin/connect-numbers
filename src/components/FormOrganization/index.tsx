@@ -1,18 +1,13 @@
 import { parsePhone } from '@/shared/utils';
 import { Button, Col, Form, Input, Row } from 'antd';
 import clsx from 'clsx';
-import React from 'react';
-import styles from './FormOrganization.module.scss';
 
-export interface IFormOrganizationValues {
-  name: string;
-  abbreviation: string;
-  email: string;
-  phone: string;
-  contactFace: string;
-  address: string;
-  website: string;
-}
+import type { TOrganizationCreate } from '@/shared/api/services/organizations/types';
+
+import styles from './FormOrganization.module.scss';
+import { useEffect } from 'react';
+
+export interface IFormOrganizationValues extends TOrganizationCreate {}
 
 interface IFormOrganizationProps {
   className?: string;
@@ -33,6 +28,11 @@ export const FormOrganization: React.FC<IFormOrganizationProps> = ({
 }) => {
   const [form] = Form.useForm<IFormOrganizationValues>();
 
+  useEffect(() => {
+    console.log(2, { initialValues });
+    form.setFieldsValue({ ...initialValues, phone: parsePhone(initialValues?.phone || '') });
+  }, [initialValues]);
+
   const handleValuesChange = (values: IFormOrganizationValues) => {
     if (values.phone) {
       form.setFieldValue('phone', parsePhone(values.phone));
@@ -47,7 +47,6 @@ export const FormOrganization: React.FC<IFormOrganizationProps> = ({
       onFinish={onSubmit}
       form={form}
       disabled={disabled}
-      initialValues={{ ...initialValues, phone: parsePhone(initialValues?.phone || '') }}
       onValuesChange={handleValuesChange}>
       <Row gutter={24}>
         <Col flex="1 1 320px">
@@ -59,10 +58,7 @@ export const FormOrganization: React.FC<IFormOrganizationProps> = ({
           </Form.Item>
         </Col>
         <Col flex="1 1 200px">
-          <Form.Item
-            label="Кратное название"
-            name="abbreviation"
-            rules={[{ required: true, message: 'Заполните название' }]}>
+          <Form.Item label="Кратное название" name="abbreviation">
             <Input placeholder="ФK" allowClear />
           </Form.Item>
         </Col>
@@ -91,7 +87,7 @@ export const FormOrganization: React.FC<IFormOrganizationProps> = ({
         <Col flex="1 1 320px">
           <Form.Item
             label="Контактное лицо"
-            name="contactFace"
+            name="contact"
             rules={[{ required: true, message: 'Заполните контактное лицо' }]}>
             <Input placeholder="Иван Иванов Иванович" allowClear />
           </Form.Item>
@@ -100,18 +96,12 @@ export const FormOrganization: React.FC<IFormOrganizationProps> = ({
           <Form.Item
             name="website"
             label="Веб-сайт"
-            rules={[
-              { required: true, message: 'Заполните веб-сайт' },
-              { type: 'url', message: 'Некорректная ссылка' },
-            ]}>
+            rules={[{ type: 'url', message: 'Некорректная ссылка' }]}>
             <Input placeholder="www.sport.ru" allowClear />
           </Form.Item>
         </Col>
         <Col flex="1 1 320px">
-          <Form.Item
-            name="address"
-            label="Адрес"
-            rules={[{ required: true, message: 'Заполните адрес' }]}>
+          <Form.Item name="address" label="Адрес">
             <Input placeholder="г. Нижний Новгород" allowClear />
           </Form.Item>
         </Col>

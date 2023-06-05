@@ -6,12 +6,12 @@ import dayjs from 'dayjs';
 
 import { ModalAssignTesting } from '@/components';
 import { routes } from '@/router';
+import { DeleteResult } from './DeleteResult';
 
 import type { IPatientModel, IResultModel } from '@/shared/api/models';
 import type { ColumnsType } from 'antd/es/table';
 
 import styles from '../PatientProfilePage.module.scss';
-import { DeleteResult } from './DeleteResult';
 
 const sortByTime = (time1: string | null, time2: string | null) => {
   const t1 = time1?.split(':').map((v) => +v) || [0, 0];
