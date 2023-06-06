@@ -34,7 +34,7 @@ export const MainLayout: React.FC = () => {
 
       navigate(routes.profile.path);
     }
-  }, [authUser]);
+  }, [authUser, isLoading]);
 
   // Todo: При первом рендере белый экран
   return isLoading ? <Spin tip="Загрузка" size="large" style={{ height: '100vh' }} /> : <Outlet />;

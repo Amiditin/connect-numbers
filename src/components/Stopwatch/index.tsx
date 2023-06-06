@@ -8,7 +8,7 @@ interface IStopwatchProps {
 
 export const Stopwatch: React.FC<IStopwatchProps> = ({ interval, status, getTime }) => {
   const [timer, setTimer] = useState(0);
-  const timerRef = useRef<number>();
+  const timerRef = useRef<NodeJS.Timer>();
 
   useEffect(() => {
     const handleStart = () => {
