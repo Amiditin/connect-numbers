@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import { ModalAssignTesting } from '@/components';
 import { routes } from '@/router';
 import { DeleteResult } from './DeleteResult';
-import { baseBackendURL } from '@/shared/api/apiRoutes';
 
 import type { IPatientModel, IResultModel } from '@/shared/api/models';
 import type { ColumnsType } from 'antd/es/table';
@@ -46,7 +45,9 @@ const columns: ColumnsType<IResultModel> = [
           dayjs(record.dateEnd).format('до HH:mm')}
         <Paragraph
           copyable={{
-            text: `${baseBackendURL}/test/${record.id}`,
+            text: `${import.meta.env.PROD ? 'http://tmt.sportfmba.ru' : 'localhost:3000'}/test/${
+              record.id
+            }`,
             icon: [
               <LinkOutlined key="copy-icon" />,
               <LinkOutlined key="copied-icon" style={{ color: 'blue' }} />,
