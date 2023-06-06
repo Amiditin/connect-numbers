@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector, usePageTitles } from '@/shared/hooks';
 import { authThunks, getAuthUser } from '@/redux/auth';
 import { routes } from '@/router';
 import { Spin } from 'antd';
+
+import styles from './MainLayout.module.scss';
 
 export const MainLayout: React.FC = () => {
   usePageTitles(routes);
@@ -12,6 +14,7 @@ export const MainLayout: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
 
   const authUser = useAppSelector(getAuthUser);
@@ -26,16 +29,16 @@ export const MainLayout: React.FC = () => {
         navigate(routes.authLogin.path);
         return;
       }
-      // Todo: Роль админа
-      if (authUser && authUser?.email === 'admin@mail.ru') {
-        navigate(routes.organizations.path);
-        return;
-      }
 
-      navigate(routes.profile.path);
+      if (location.pathname === routes.authLogin.path) {
+        if (authUser && authUser?.email === 'admin@mail.ru') {
+          navigate(routes.organizations.path);
+        } else {
+          navigate(routes.profile.path);
+        }
+      }
     }
   }, [authUser, isLoading]);
 
-  // Todo: При первом рендере белый экран
-  return isLoading ? <Spin tip="Загрузка" size="large" style={{ height: '100vh' }} /> : <Outlet />;
+  return isLoading ? <Spin className={styles.spin} size="large" tip="Загрузка" /> : <Outlet />;
 };

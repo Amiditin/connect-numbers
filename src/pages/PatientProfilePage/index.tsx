@@ -37,7 +37,7 @@ export const PatientProfilePage: React.FC = () => {
         <>
           <Title level={2}>
             <Avatar className={styles.avatar} size="large">
-              {patient.fullname[0] + patient.fullname.split(' ')[1][0]}
+              {patient.fullname[0] + (patient.fullname.split(' ')?.[1]?.[0] || '')}
             </Avatar>
             Профиль пациента
           </Title>

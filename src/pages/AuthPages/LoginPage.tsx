@@ -20,8 +20,6 @@ export const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const handleSubmit = (values: LoginForm) => {
-    console.log(values);
-
     dispatch(authThunks.login(values));
   };
 

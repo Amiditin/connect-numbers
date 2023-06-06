@@ -8,6 +8,7 @@ import type { IResearcherModel } from '@/shared/api/models';
 import type { TThunkConfig } from '@/redux/types';
 import type { IAuthLoginParams } from './types';
 import type { IRegisterParams } from '@/shared/api/services/auth/types';
+import { axios } from '@/shared/api/axios';
 
 export const authThunks = {
   login: createAsyncThunk<IResearcherModel, IAuthLoginParams, TThunkConfig>(
@@ -20,9 +21,12 @@ export const authThunks = {
           localStorage.setItem('token', data.token);
         }
 
-        const res = await researchersService.profile(undefined, {
+        axios.interceptors.request.use((config) => ({
+          ...config,
           headers: { Authorization: `Bearer ${data.token}` },
-        });
+        }));
+
+        const res = await researchersService.profile();
 
         return res.data;
       } catch (error) {

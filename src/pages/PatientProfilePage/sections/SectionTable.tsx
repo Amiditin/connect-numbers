@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Space, Table, Typography } from 'antd';
+import { Button, Table, Typography } from 'antd';
 import { ExperimentOutlined, LinkOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -34,9 +34,6 @@ const getSumTime = (time1: string | null, time2: string | null) => {
 
 const { Title, Paragraph } = Typography;
 
-console.log(dayjs('2023-05-22T16:00:00.000Z').format());
-
-// "2023-05-22T16:00:00.000Z"
 const columns: ColumnsType<IResultModel> = [
   {
     title: 'Дата начала - конца',
@@ -118,8 +115,6 @@ interface ISectionTableProps {
 export const SectionTable: React.FC<ISectionTableProps> = ({ patient }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-
-  console.log(patient);
 
   return (
     <section>
