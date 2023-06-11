@@ -17,7 +17,7 @@ interface IModalAddOrganizationProps {
 export const ModalAddOrganization: React.FC<IModalAddOrganizationProps> = ({
   isModalOpen,
   onCancel,
-  onSuccessAdd = () => {},
+  onSuccessAdd = () => undefined,
 }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [isLoading, setIsLoading] = useState(false);

@@ -19,7 +19,7 @@ interface IModalAddPatientProps {
 export const ModalAddPatient: React.FC<IModalAddPatientProps> = ({
   isModalOpen,
   onCancel,
-  onSuccessAdd = () => {},
+  onSuccessAdd = () => undefined,
 }) => {
   const user = useAppSelector(getAuthUser);
 

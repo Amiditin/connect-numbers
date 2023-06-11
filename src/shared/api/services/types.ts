@@ -6,7 +6,7 @@ export interface IDefaultModel {
   updatedAt: string;
 }
 
-export interface IModelId extends Pick<IDefaultModel, 'id'> {}
+export type IModelId = Pick<IDefaultModel, 'id'>;
 
 export type TAxiosRequest<TParams, TResponseData> = (
   params: TParams,

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Dropdown, Input, message, Popconfirm, Space, Table, Typography } from 'antd';
+import { Button, Dropdown, Input, message, Space, Table, Typography } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -162,7 +162,7 @@ export const OrganizationsPage: React.FC = () => {
       width: '180px',
       ...getColumnSearchProps('website'),
       render: (_, record) => (
-        <a href={`https://$${record.website}`} target="_blank">
+        <a href={`https://$${record.website}`} target="_blank" rel="noreferrer">
           {record.website}
         </a>
       ),

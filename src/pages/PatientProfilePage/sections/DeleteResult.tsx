@@ -8,7 +8,10 @@ interface IDeleteResultProps {
   onSuccessRemove?: () => void;
 }
 
-export const DeleteResult: React.FC<IDeleteResultProps> = ({ resultId, onSuccessRemove }) => {
+export const DeleteResult: React.FC<IDeleteResultProps> = ({
+  resultId,
+  onSuccessRemove = () => undefined,
+}) => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleDeleteResult = async () => {
@@ -18,6 +21,7 @@ export const DeleteResult: React.FC<IDeleteResultProps> = ({ resultId, onSuccess
       await resultsService.remove({ id: resultId });
 
       message.success('Запись удалена!', 2);
+      onSuccessRemove();
       messageApi.destroy();
     } catch (error) {
       messageApi.destroy();

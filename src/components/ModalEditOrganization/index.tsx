@@ -19,7 +19,7 @@ interface IModalEditOrganizationProps {
 export const ModalEditOrganization: React.FC<IModalEditOrganizationProps> = ({
   isModalOpen,
   onCancel,
-  onSuccessEdit = () => {},
+  onSuccessEdit = () => undefined,
   organization,
 }) => {
   const [messageApi, contextHolder] = message.useMessage();

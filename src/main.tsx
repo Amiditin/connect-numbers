@@ -12,9 +12,11 @@ import { configProviderProps } from './shared/constants';
 import './shared/scss/main.scss';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <Provider store={store}>
-    <ConfigProvider {...configProviderProps}>
-      <RouterProvider router={router} />
-    </ConfigProvider>
-  </Provider>,
+  <StrictMode>
+    <Provider store={store}>
+      <ConfigProvider {...configProviderProps}>
+        <RouterProvider router={router} />
+      </ConfigProvider>
+    </Provider>
+  </StrictMode>,
 );

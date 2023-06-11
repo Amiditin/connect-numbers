@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useNavigate } from 'react-router-dom';
 import { Breadcrumb, Layout, Menu, type MenuProps } from 'antd';
 import { HomeOutlined, TeamOutlined, PartitionOutlined } from '@ant-design/icons';
 

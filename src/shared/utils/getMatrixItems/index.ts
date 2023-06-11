@@ -21,7 +21,7 @@ export const getMatrixItems: TGetMatrixItems = ({
   const { circleRadius, height, width } = matrixOptions;
   const minDistance = circleRadius + DISTANCE_FROM_BORDERS;
 
-  let matrixItems: IMatrixItem[] = [
+  const matrixItems: IMatrixItem[] = [
     {
       active: true,
       coordX: getRandomNumber(width * COF_MAX_RADIUS, width * (1 - COF_MAX_RADIUS)),
@@ -47,15 +47,15 @@ export const getMatrixItems: TGetMatrixItems = ({
       height: getInterval(matrixItems[i - 1].coordY, height),
     };
 
-    let coordX: number;
-    let coordY: number;
+    let coordX = 0;
+    let coordY = 0;
     let iterations = 0;
 
-    while (true) {
+    let isBadCoords = true;
+
+    while (isBadCoords) {
       coordX = getRandomNumber(interval.width.min, interval.width.max);
       coordY = getRandomNumber(interval.height.min, interval.height.max);
-
-      let isBadCoords = false;
 
       for (let j = 0; j < matrixItems.length; j++) {
         const distance = Math.sqrt(
@@ -63,8 +63,11 @@ export const getMatrixItems: TGetMatrixItems = ({
         );
 
         if (distance < circleRadius * 3) {
-          isBadCoords = true;
           break;
+        }
+
+        if (j === matrixItems.length - 1) {
+          isBadCoords = false;
         }
       }
 
@@ -75,11 +78,8 @@ export const getMatrixItems: TGetMatrixItems = ({
             height: { min: minDistance, max: height - minDistance },
           };
         }
-
         continue;
       }
-
-      break;
     }
 
     let text = String(i + 1);

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, DatePicker, Divider, message, Form, Button, TimePicker, Row, Col } from 'antd';
+import { Modal, DatePicker, Divider, message, Form, Button, TimePicker } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 
 import { resultsService } from '@/shared/api/services/results';
@@ -24,7 +24,7 @@ export const ModalAssignTesting: React.FC<IModalAssignTestingProps> = ({
   patientId,
   isModalOpen,
   onCancel,
-  onSuccessAssign = () => {},
+  onSuccessAssign = () => undefined,
 }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [isLoading, setIsLoading] = useState(false);

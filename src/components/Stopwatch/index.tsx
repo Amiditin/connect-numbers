@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 interface IStopwatchProps {
   interval: number;
   status: 'paused' | 'started' | 'stopped';
-  getTime: (time: string) => any;
+  getTime: (time: string) => unknown;
 }
 
 export const Stopwatch: React.FC<IStopwatchProps> = ({ interval, status, getTime }) => {

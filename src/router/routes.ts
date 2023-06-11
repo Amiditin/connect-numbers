@@ -1,7 +1,7 @@
 interface IRoute {
   path: string;
   pageTitle?: string;
-  getPath?: (...params: any) => string;
+  getPath?: (...params: unknown[]) => string;
 }
 
 export type TRoutes = Record<string, IRoute>;

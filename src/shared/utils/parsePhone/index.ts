@@ -12,7 +12,7 @@ export const parsePhone: TParsePhone = (phone) => {
     return '+7';
   }
 
-  let phoneNumbers = phone.match(/\d/g)?.join('').split('');
+  const phoneNumbers = phone.match(/\d/g)?.join('').split('');
 
   if (!phoneNumbers || phoneNumbers.length === 0) {
     return '';

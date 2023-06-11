@@ -118,7 +118,7 @@ export const FormResearcher: React.FC<IFormOrganizationProps> = ({
             name="phone"
             rules={[
               { required: true, message: 'Заполните телефон' },
-              { pattern: /^\+7\(\d{3}\)\d{3}\-\d{2}\-\d{2}/g, message: 'Некорректный номер' },
+              { pattern: /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/g, message: 'Некорректный номер' },
             ]}>
             <Input placeholder="+7(999)555-33-22" maxLength={16} allowClear />
           </Form.Item>

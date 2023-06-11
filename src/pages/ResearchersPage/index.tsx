@@ -47,7 +47,7 @@ export const ResearchersPage: React.FC = () => {
   };
 
   const getColumnSearchProps = (dataKey: keyof IResearcherModel): ColumnType<IResearcherModel> => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div className={styles.filter_search} onKeyDown={(e) => e.stopPropagation()}>
         <Input
           className={styles.input}
