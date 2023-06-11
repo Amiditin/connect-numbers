@@ -1,12 +1,13 @@
 interface IRoute {
   path: string;
   pageTitle?: string;
-  getPath?: (...params: unknown[]) => string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getPath?: (...params: any[]) => string;
 }
 
 export type TRoutes = Record<string, IRoute>;
 
-export const routes = {
+export const routes: TRoutes = {
   root: {
     path: '/',
   },
