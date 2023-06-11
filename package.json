@@ -7,7 +7,8 @@
     "dev": "vite",
     "component": "generate-react component",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "npx eslint ./src/"
   },
   "engines": {
     "node": ">=15.0.0",
@@ -31,9 +32,14 @@
     "@types/qs": "^6.9.7",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.59.9",
+    "@typescript-eslint/parser": "^5.59.9",
     "@vitejs/plugin-react": "3.0.0",
     "@vitejs/plugin-react-swc": "3.0.1",
     "eslint": "8.30.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "generate-react-cli": "8.1.2",
     "prettier": "2.8.1",
     "sass": "1.57.1",

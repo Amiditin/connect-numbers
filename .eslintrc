@@ -6,9 +6,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "airbnb",
-    "prettier"
+    "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -47,8 +45,10 @@
         "extensions": [".ts", ".tsx"]
       }
     ],
+    "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "react/jsx-wrap-multilines": "off",
+    "react/prop-types": "off",
     "react/require-default-props": "off"
   },
   "settings": {
@@ -56,6 +56,9 @@
       "typescript": {
         "project": "./tsconfig.json"
       }
+    },
+    "react": {
+      "version": "detect"
     }
   }
 }
