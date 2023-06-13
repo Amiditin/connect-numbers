@@ -1,6 +1,7 @@
 export type TParsePhone = (phone: string) => string;
 
-// * +79999999999 -> +7(999)999-99-99const ruPhoneFormat = '+7(___)___-__-__';
+// * +79999999999 -> +7(999)999-99-99
+const ruPhoneFormat = '+7(___)___-__-__';
 
 export const parsePhone: TParsePhone = (phone) => {
   if (
