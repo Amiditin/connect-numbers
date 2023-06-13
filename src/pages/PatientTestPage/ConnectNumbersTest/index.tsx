@@ -47,7 +47,7 @@ export const ConnectNumbersTest: React.FC<IConnectNumbersTestProps> = ({
         text: item.text,
       })),
     );
-  }, [width, height, circleRadius, test]);
+  }, [width, height, circleRadius, test, lang]);
 
   const getItemByNumber = (number: number): IMatrixItem => {
     return matrixItems.find((item) => item.number === number) || matrixItems[0];

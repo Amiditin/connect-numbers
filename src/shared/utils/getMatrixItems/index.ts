@@ -71,14 +71,13 @@ export const getMatrixItems: TGetMatrixItems = ({
         }
       }
 
-      if (isBadCoords) {
-        if (++iterations > 100) {
-          interval = {
-            width: { min: minDistance, max: width - minDistance },
-            height: { min: minDistance, max: height - minDistance },
-          };
-        }
-        continue;
+      iterations += 1;
+
+      if (isBadCoords && iterations > 100) {
+        interval = {
+          width: { min: minDistance, max: width - minDistance },
+          height: { min: minDistance, max: height - minDistance },
+        };
       }
     }
 

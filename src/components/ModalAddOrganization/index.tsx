@@ -37,7 +37,7 @@ export const ModalAddOrganization: React.FC<IModalAddOrganizationProps> = ({
       messageApi.destroy();
       message.error('Организация не была добавлена!', 2);
     }
-  }, [isLoading, organizationsStatus]);
+  }, [isLoading, messageApi, onSuccessAdd, organizationsStatus]);
 
   const handleAddOrganization = (values: IFormOrganizationValues) => {
     setIsLoading(true);

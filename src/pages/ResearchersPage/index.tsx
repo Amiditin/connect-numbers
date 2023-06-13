@@ -3,14 +3,14 @@ import { Button, Table, Typography, Input } from 'antd';
 import { LineOutlined, SearchOutlined } from '@ant-design/icons';
 
 import { parsePhone } from '@/shared/utils';
+import { researchersService } from '@/shared/api/services';
+import { TRequestStatuses } from '@/redux/types';
 
 import type { InputRef } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { IOrganizationModel, IResearcherModel } from '@/shared/api/models';
 
 import styles from './ResearchersPage.module.scss';
-import { researchersService } from '@/shared/api/services';
-import { TRequestStatuses } from '@/redux/types';
 
 const { Title, Text } = Typography;
 
@@ -27,7 +27,7 @@ export const ResearchersPage: React.FC = () => {
         setResearchers(data);
         setResearchersStatus('success');
       } catch (error) {
-        console.log(error);
+        console.error(error);
         setResearchersStatus('error');
       }
     };
@@ -42,13 +42,17 @@ export const ResearchersPage: React.FC = () => {
         prev.map((item) => (item.id === id ? { ...item, isVerified: true } : item)),
       );
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const getColumnSearchProps = (dataKey: keyof IResearcherModel): ColumnType<IResearcherModel> => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div className={styles.filter_search} onKeyDown={(e) => e.stopPropagation()}>
+      <div
+        className={styles.filter_search}
+        onKeyDown={(e) => e.stopPropagation()}
+        role="textbox"
+        tabIndex={0}>
         <Input
           className={styles.input}
           ref={searchInput}

@@ -3,6 +3,7 @@ import clsx from 'clsx';
 
 import { typesSport } from '@/shared/constants';
 import { parsePhone } from '@/shared/utils';
+
 import { curYear, months, typesEducation, typesGender } from './constants';
 
 import type { IPatientModel } from '@/shared/api/models';

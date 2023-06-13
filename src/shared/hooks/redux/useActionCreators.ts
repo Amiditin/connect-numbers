@@ -6,7 +6,7 @@ import { useAppDispatch } from './useAppDispatch';
 export const useActionCreators = (actions: ActionCreatorsMapObject) => {
   const dispatch = useAppDispatch();
 
-  return useMemo(() => bindActionCreators(actions, dispatch), []);
+  return useMemo(() => bindActionCreators(actions, dispatch), [actions, dispatch]);
 };
 
 // * Хук предпочтительно использовать когда импортируется один экшен,

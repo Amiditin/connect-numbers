@@ -1,14 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
-import { authName } from './slice';
 import { authService, researchersService } from '@/shared/api/services';
+import { axios } from '@/shared/api/axios';
+
+import { authName } from './slice';
 
 import type { IResearcherModel } from '@/shared/api/models';
 import type { TThunkConfig } from '@/redux/types';
 import type { IAuthLoginParams } from './types';
 import type { IRegisterParams } from '@/shared/api/services/auth/types';
-import { axios } from '@/shared/api/axios';
 
 export const authThunks = {
   login: createAsyncThunk<IResearcherModel, IAuthLoginParams, TThunkConfig>(

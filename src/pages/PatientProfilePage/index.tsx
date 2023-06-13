@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Avatar, Divider, Typography } from 'antd';
 
-import { SectionForm, SectionTable } from './sections';
 import { patientsService } from '@/shared/api/services/patients';
+
+import { SectionForm, SectionTable } from './sections';
 
 import type { IPatientModel } from '@/shared/api/models';
 

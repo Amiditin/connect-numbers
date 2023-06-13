@@ -1,11 +1,12 @@
-import { parsePhone } from '@/shared/utils';
+import { useEffect } from 'react';
 import { Button, Col, Form, Input, Row } from 'antd';
 import clsx from 'clsx';
+
+import { parsePhone } from '@/shared/utils';
 
 import type { TOrganizationCreate } from '@/shared/api/services/organizations/types';
 
 import styles from './FormOrganization.module.scss';
-import { useEffect } from 'react';
 
 export type IFormOrganizationValues = TOrganizationCreate;
 
@@ -29,9 +30,8 @@ export const FormOrganization: React.FC<IFormOrganizationProps> = ({
   const [form] = Form.useForm<IFormOrganizationValues>();
 
   useEffect(() => {
-    console.log(2, { initialValues });
     form.setFieldsValue({ ...initialValues, phone: parsePhone(initialValues?.phone || '') });
-  }, [initialValues]);
+  }, [form, initialValues]);
 
   const handleValuesChange = (values: IFormOrganizationValues) => {
     if (values.phone) {

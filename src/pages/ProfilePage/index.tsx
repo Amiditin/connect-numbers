@@ -10,13 +10,13 @@ import styles from './ProfilePage.module.scss';
 const { Title, Text } = Typography;
 
 export const ProfilePage: React.FC = () => {
+  const dispatch = useAppDispatch();
+
   const researcher = useAppSelector(getAuthUser);
 
   if (!researcher) {
     return null;
   }
-
-  const dispatch = useAppDispatch();
 
   const onClickLogout = () => {
     dispatch(authActions.logout());

@@ -22,11 +22,6 @@ export const ModalAddPatient: React.FC<IModalAddPatientProps> = ({
   onSuccessAdd = () => undefined,
 }) => {
   const user = useAppSelector(getAuthUser);
-
-  if (!user) {
-    return null;
-  }
-
   const [isLoading, setIsLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const dispatch = useAppDispatch();
@@ -45,7 +40,11 @@ export const ModalAddPatient: React.FC<IModalAddPatientProps> = ({
       messageApi.destroy();
       message.error('Пациент не был добавлен!', 2);
     }
-  }, [isLoading, patientsStatus]);
+  }, [isLoading, messageApi, onSuccessAdd, patientsStatus]);
+
+  if (!user) {
+    return null;
+  }
 
   const handleAddPatient = (values: IFormPatientValues) => {
     const { birthDay, birthMonth, birthYear, ...params } = values;

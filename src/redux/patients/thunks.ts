@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
-import { patientsName } from './slice';
 import { patientsService } from '@/shared/api/services/patients';
+
+import { patientsName } from './slice';
 
 import type { IPatientModel } from '@/shared/api/models';
 import type { TThunkConfig } from '@/redux/types';

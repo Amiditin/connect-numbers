@@ -7,15 +7,15 @@ const organizationsRoute = apiRoutes.organizations.root;
 
 export const organizationsService: IOrganizationsService = {
   findAll: async (_, config) => {
-    return await axios.get(organizationsRoute, config);
+    return axios.get(organizationsRoute, config);
   },
   create: async (params, config) => {
-    return await axios.post(organizationsRoute, params, config);
+    return axios.post(organizationsRoute, params, config);
   },
   update: async ({ id, ...params }, config) => {
-    return await axios.patch(`${organizationsRoute}/${id}`, params, config);
+    return axios.patch(`${organizationsRoute}/${id}`, params, config);
   },
   remove: async ({ id }, config) => {
-    return await axios.delete(`${organizationsRoute}/${id}`, config);
+    return axios.delete(`${organizationsRoute}/${id}`, config);
   },
 };

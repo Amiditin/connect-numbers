@@ -1,11 +1,13 @@
 import type { IModelId, IDefaultModel, TAxiosRequest } from '@/shared/api/services/types';
 import type { IResearcherModel, IResultModel } from '@/shared/api/models';
 
+// eslint-disable-next-line no-shadow
 export enum EGenderTypes {
   MALE = 'male',
   FEMALE = 'female',
 }
 
+// eslint-disable-next-line no-shadow
 export enum EEducationTypes {
   BASIC_GENERAL = 'Основное общее',
   SECONDARY_GENERAL = 'Среднее общее',

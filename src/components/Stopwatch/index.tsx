@@ -14,7 +14,7 @@ export const Stopwatch: React.FC<IStopwatchProps> = ({ interval, status, getTime
     const handleStart = () => {
       setTimer(0);
       timerRef.current = setInterval(() => {
-        setTimer((timer) => timer + interval / 1000);
+        setTimer((prevTimer) => prevTimer + interval / 1000);
       }, interval);
     };
 
@@ -35,7 +35,7 @@ export const Stopwatch: React.FC<IStopwatchProps> = ({ interval, status, getTime
         clearInterval(timerRef.current);
         break;
     }
-  }, [interval, status]);
+  }, [getTime, interval, status, timer]);
 
   return <>{timer.toFixed(1)}</>;
 };

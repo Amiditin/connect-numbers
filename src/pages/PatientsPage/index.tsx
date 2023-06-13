@@ -38,7 +38,7 @@ export const PatientsPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(patientsThunks.findAll());
-  }, []);
+  }, [dispatch]);
 
   const patientsItems = useAppSelector(getPatientsItems);
   const patientsStatus = useAppSelector(getPatientsStatus);
@@ -59,6 +59,7 @@ export const PatientsPage: React.FC = () => {
   );
 
   const columns: ColumnsType<IPatientModel> = useMemo(
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     () => [
       {
         title: 'Фамилия Имя Отчество',
@@ -66,7 +67,11 @@ export const PatientsPage: React.FC = () => {
         key: 'fullname',
         width: '300px',
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-          <div className={styles.filter_search} onKeyDown={(e) => e.stopPropagation()}>
+          <div
+            className={styles.filter_search}
+            onKeyDown={(e) => e.stopPropagation()}
+            role="textbox"
+            tabIndex={0}>
             <Input
               className={styles.input}
               ref={searchInput}
@@ -133,7 +138,11 @@ export const PatientsPage: React.FC = () => {
         sorter: (a, b) =>
           Date.parse(a.dateLastTest || '0') < Date.parse(b.dateLastTest || '0') ? -1 : 1,
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-          <div className={styles.filter_search} onKeyDown={(e) => e.stopPropagation()}>
+          <div
+            className={styles.filter_search}
+            onKeyDown={(e) => e.stopPropagation()}
+            role="textbox"
+            tabIndex={0}>
             <DatePicker.RangePicker
               className={styles.range_picker}
               allowEmpty={[true, true]}
@@ -167,7 +176,7 @@ export const PatientsPage: React.FC = () => {
                 className={styles.button}
                 size="small"
                 onClick={() => {
-                  clearFilters && clearFilters();
+                  clearFilters?.();
                   setLastTestFilterValues(['', '']);
                   confirm();
                 }}>
@@ -244,7 +253,7 @@ export const PatientsPage: React.FC = () => {
         ),
       },
     ],
-    [],
+    [lastTestFilterValues, navigate, typesSport],
   );
 
   return (

@@ -5,10 +5,11 @@ import { EditOutlined, StopOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 import { FormPatient, type IFormPatientValues } from '@/components';
-import { DeleteProfile } from './DeleteProfile';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks';
 import { getPatientsStatus, patientsThunks } from '@/redux/patients';
 import { extractNumbers } from '@/shared/utils';
+
+import { DeleteProfile } from './DeleteProfile';
 
 import type { IPatientModel } from '@/shared/api/models';
 
@@ -42,13 +43,13 @@ export const SectionForm: React.FC<ISectionFormProps> = ({ patient }) => {
       messageApi.destroy();
       message.error('Изменения не были сохранены!', 2);
     }
-  }, [isLoading, patientsStatus]);
+  }, [isLoading, messageApi, patientsStatus]);
 
   useEffect(() => {
     if (location.state?.editing) {
       setIsEdited(true);
     }
-  }, []);
+  }, [location.state?.editing]);
 
   const handleEditPatient = (values: IFormPatientValues) => {
     const { birthDay, birthMonth, birthYear, ...params } = values;
@@ -75,9 +76,7 @@ export const SectionForm: React.FC<ISectionFormProps> = ({ patient }) => {
             className={styles.btn}
             type="primary"
             icon={isEdited ? <StopOutlined /> : <EditOutlined />}
-            onClick={() => {
-              isEdited ? setIsEdited(false) : setIsEdited(true);
-            }}>
+            onClick={() => setIsEdited((prev) => !prev)}>
             {/* TODO Добавить логику отмены */}
             {isEdited ? 'Отменить' : 'Редактировать'}
           </Button>

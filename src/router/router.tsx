@@ -1,6 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import { routes } from './routes';
 import { ErrorBoundary } from '@/components';
 import { MainLayout, ResearcherLayout, AdminLayout, AuthLayout } from '@/layouts';
 import {
@@ -16,6 +15,8 @@ import {
   RegisterPage,
   ResearchersPage,
 } from '@/pages';
+
+import { routes } from './routes';
 
 export const router = createBrowserRouter([
   {

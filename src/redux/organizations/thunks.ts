@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
-import { organizationsName } from './slice';
 import { organizationsService } from '@/shared/api/services/organizations';
+
+import { organizationsName } from './slice';
 
 import type { IOrganizationModel } from '@/shared/api/models';
 import type { TThunkConfig } from '@/redux/types';

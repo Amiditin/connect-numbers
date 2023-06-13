@@ -14,7 +14,7 @@ interface ForgotPasswordForm {
 
 export const ForgotPasswordPage: React.FC = () => {
   const handleSubmit = (values: ForgotPasswordForm) => {
-    console.log(values);
+    console.warn(values);
   };
 
   return (

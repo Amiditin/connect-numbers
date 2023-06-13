@@ -45,7 +45,7 @@ export const OrganizationsPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(organizationsThunks.findAll());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (isLoading && organizationsStatus === 'success') {
@@ -59,7 +59,7 @@ export const OrganizationsPage: React.FC = () => {
       messageApi.destroy();
       message.error('Организация не была удалена!', 2);
     }
-  }, [isLoading, organizationsStatus]);
+  }, [isLoading, messageApi, organizationsStatus]);
 
   const handleDeleteOrganization = (id: string) => {
     setIsLoading(true);
@@ -71,7 +71,11 @@ export const OrganizationsPage: React.FC = () => {
     dataKey: keyof IOrganizationModel,
   ): ColumnType<IOrganizationModel> => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div className={styles.filter_search} onKeyDown={(e) => e.stopPropagation()}>
+      <div
+        className={styles.filter_search}
+        onKeyDown={(e) => e.stopPropagation()}
+        role="textbox"
+        tabIndex={0}>
         <Input
           className={styles.input}
           ref={searchInput}

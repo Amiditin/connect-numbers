@@ -49,7 +49,7 @@ export const ResearcherLayout: React.FC = () => {
         onClick: () => navigate(routes.patients.path),
       },
     ],
-    [],
+    [navigate],
   );
 
   // TODO: обновить Breadcrumbs под antd v5.3 https://ant.design/components/breadcrumb#/home/user
@@ -73,18 +73,24 @@ export const ResearcherLayout: React.FC = () => {
       );
     }
 
-    for (const key in breadcrumbMap) {
-      if (key === curPathname[1]) {
-        return (
+    let breadcrumbItem: React.ReactNode = null;
+
+    Object.keys(breadcrumbMap).some((key) => {
+      if (key === curPathname[2]) {
+        breadcrumbItem = (
           <Breadcrumb.Item>
             {breadcrumbMap[key].icon}
             <span>{breadcrumbMap[key].label}</span>
           </Breadcrumb.Item>
         );
-      }
-    }
 
-    return null;
+        return true;
+      }
+
+      return false;
+    });
+
+    return breadcrumbItem;
   };
 
   return (

@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
-import { Outlet, ScrollRestoration, useNavigate } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-router-dom';
 import { Breadcrumb, Layout, Menu, type MenuProps } from 'antd';
 import { HomeOutlined, TeamOutlined, PartitionOutlined } from '@ant-design/icons';
 
 import { routes } from '@/router';
 import { MainLogo } from '@/shared/assets/images';
-
-import styles from './AdminLayout.module.scss';
 import { useAppDispatch } from '@/shared/hooks';
 import { authActions } from '@/redux/auth';
+
+import styles from './AdminLayout.module.scss';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -33,6 +33,7 @@ const breadcrumbMap: Record<string, IBreadcrumbItem> = {
 export const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   const menuItems: MenuItem[] = useMemo(
     () => [
@@ -52,25 +53,30 @@ export const AdminLayout: React.FC = () => {
         onClick: () => dispatch(authActions.logout()),
       },
     ],
-    [],
+    [dispatch, navigate],
   );
 
   // TODO: обновить Breadcrumbs под antd v5.3 https://ant.design/components/breadcrumb#/home/user
   const renderBreadcrumbItemContent = (): React.ReactNode => {
     const curPathname = location.pathname.split('/');
+    let breadcrumbItem: React.ReactNode = null;
 
-    for (const key in breadcrumbMap) {
+    Object.keys(breadcrumbMap).some((key) => {
       if (key === curPathname[2]) {
-        return (
+        breadcrumbItem = (
           <Breadcrumb.Item>
             {breadcrumbMap[key].icon}
             <span>{breadcrumbMap[key].label}</span>
           </Breadcrumb.Item>
         );
-      }
-    }
 
-    return null;
+        return true;
+      }
+
+      return false;
+    });
+
+    return breadcrumbItem;
   };
 
   return (

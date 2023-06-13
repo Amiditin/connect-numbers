@@ -40,7 +40,7 @@ export const ModalEditOrganization: React.FC<IModalEditOrganizationProps> = ({
       messageApi.destroy();
       message.error('Организация не была изменена!', 2);
     }
-  }, [isLoading, organizationsStatus]);
+  }, [isLoading, messageApi, onSuccessEdit, organizationsStatus]);
 
   const handleEditOrganization = (values: IFormOrganizationValues) => {
     setIsLoading(true);

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
+import { Spin } from 'antd';
 
 import { useAppDispatch, useAppSelector, usePageTitles } from '@/shared/hooks';
 import { authThunks, getAuthUser } from '@/redux/auth';
 import { routes } from '@/router';
-import { Spin } from 'antd';
 
 import styles from './MainLayout.module.scss';
 
@@ -20,8 +20,10 @@ export const MainLayout: React.FC = () => {
   const authUser = useAppSelector(getAuthUser);
 
   useEffect(() => {
-    dispatch(authThunks.profile()).finally(() => setIsLoading(false));
-  }, []);
+    dispatch(authThunks.profile())
+      .finally(() => setIsLoading(false))
+      .catch((error) => console.error(error));
+  }, [dispatch]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -38,7 +40,7 @@ export const MainLayout: React.FC = () => {
         }
       }
     }
-  }, [authUser, isLoading]);
+  }, [authUser, isLoading, location.pathname, navigate]);
 
   return isLoading ? <Spin className={styles.spin} size="large" tip="Загрузка" /> : <Outlet />;
 };

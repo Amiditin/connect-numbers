@@ -12,5 +12,5 @@ export const usePageTitles = (routes: TRoutes) => {
     const route = Object.values(routes).find((item) => item.path === location.pathname);
 
     document.title = `${generalPageTitle} - ${route?.pageTitle || 404}`;
-  }, [location]);
+  }, [location, routes]);
 };

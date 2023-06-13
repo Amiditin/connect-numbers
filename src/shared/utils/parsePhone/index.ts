@@ -1,13 +1,11 @@
 export type TParsePhone = (phone: string) => string;
 
-// * +79999999999 -> +7(999)999-99-99
-
-const ruPhoneFormat = '+7(___)___-__-__';
+// * +79999999999 -> +7(999)999-99-99const ruPhoneFormat = '+7(___)___-__-__';
 
 export const parsePhone: TParsePhone = (phone) => {
   if (
     phone === '+' ||
-    (phone.length === 3 && phone.slice(0, 2) === '+7' && isNaN(+phone.slice(2, 3)))
+    (phone.length === 3 && phone.slice(0, 2) === '+7' && Number.isNaN(+phone.slice(2, 3)))
   ) {
     return '+7';
   }
@@ -19,7 +17,7 @@ export const parsePhone: TParsePhone = (phone) => {
   }
 
   if (phoneNumbers.length === 1) {
-    return '+7(' + phoneNumbers[0];
+    return `+7(${phoneNumbers[0]}`;
   }
 
   let newPhone = '';

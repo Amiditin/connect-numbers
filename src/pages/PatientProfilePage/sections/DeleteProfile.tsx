@@ -32,7 +32,7 @@ export const DeleteProfile: React.FC<IDeleteProfileProps> = ({
       setIsLoading(false);
       messageApi.destroy();
       message.success('Пациент успешно удалён!', 2);
-      onSuccessRemove && onSuccessRemove();
+      onSuccessRemove?.();
       navigate(routes.patients.path);
     }
 
@@ -41,7 +41,7 @@ export const DeleteProfile: React.FC<IDeleteProfileProps> = ({
       messageApi.destroy();
       message.error('Пациент не был удален!', 2);
     }
-  }, [isLoading, patientsStatus]);
+  }, [isLoading, messageApi, navigate, onSuccessRemove, patientsStatus]);
 
   const handleDeletePatient = async () => {
     setIsLoading(true);

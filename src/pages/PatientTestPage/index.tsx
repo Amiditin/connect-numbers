@@ -5,13 +5,14 @@ import { SmileOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
 
-import { ConnectNumbersTest } from './ConnectNumbersTest';
 import { Stopwatch } from '@/components';
 import { connectNumbersTests } from '@/shared/constants';
 import { useWindowSize } from '@/shared/hooks';
 import { resultsService } from '@/shared/api/services/results';
 import { parseDate } from '@/shared/utils';
 import { patientsService } from '@/shared/api/services/patients';
+
+import { ConnectNumbersTest } from './ConnectNumbersTest';
 import { language } from './constants';
 
 import type { TTestStatus } from './types';
@@ -56,10 +57,10 @@ export const PatientTestPage: React.FC = () => {
         });
         patientsService.update({ id: result.patient.id, dateLastTest: dayjs().format() });
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
-  }, [tests]);
+  }, [result, tests]);
 
   useEffect(() => {
     const getResult = async (id: string) => {
@@ -129,7 +130,7 @@ export const PatientTestPage: React.FC = () => {
                 className={clsx(
                   styles.tab,
                   test.completed && styles.tab_completed,
-                  tests.find((test) => !test.completed)?.number === test.number &&
+                  tests.find((item) => !item.completed)?.number === test.number &&
                     styles.tab_current,
                 )}
                 key={test.number}>

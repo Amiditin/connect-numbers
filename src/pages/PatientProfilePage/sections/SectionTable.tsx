@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 
 import { ModalAssignTesting } from '@/components';
 import { routes } from '@/router';
+
 import { DeleteResult } from './DeleteResult';
 
 import type { IPatientModel, IResultModel } from '@/shared/api/models';
@@ -29,7 +30,9 @@ const getSumTime = (time1: string | null, time2: string | null) => {
   const min = Math.floor(sum / 60);
   const sec = sum % 60;
 
-  return `${min > 9 ? min : `0${min}`}:${sec > 9 ? sec : `0${sec}`}`;
+  const parseTime = (num: number) => (num > 9 ? num : `0${num}`);
+
+  return `${parseTime(min)}:${parseTime(sec)}`;
 };
 
 const { Title, Paragraph } = Typography;
