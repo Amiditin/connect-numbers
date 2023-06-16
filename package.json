@@ -1,5 +1,5 @@
 {
-  "name": "project-template",
+  "name": "connect-numbers",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -21,10 +21,6 @@
     "axios": "1.2.1",
     "clsx": "1.2.1",
     "dayjs": "1.11.7",
-    "eslint-plugin-no-use-extend-native": "^0.5.0",
-    "eslint-plugin-optimize-regex": "^1.2.1",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-sonarjs": "^0.19.0",
     "qs": "^6.11.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -45,14 +41,19 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-no-use-extend-native": "^0.5.0",
+    "eslint-plugin-optimize-regex": "^1.2.1",
     "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-sonarjs": "^0.19.0",
     "generate-react-cli": "8.1.2",
     "prettier": "2.8.1",
     "sass": "1.57.1",
     "typescript": "4.9.4",
     "typescript-plugin-css-modules": "4.1.1",
-    "vite": "4.0.3"
+    "vite": "4.0.3",
+    "vite-plugin-eslint": "^1.8.1"
   }
 }

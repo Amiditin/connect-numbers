@@ -1,12 +1,9 @@
-Dockerfile.dev
-Dockerfile.prod
+Dockerfile
 docker-compose.yml
 .dockerignore
 .gitignore
 .git
 .vscode
-.eslintrc
-.prettierrc
 README.md
 generate-react-cli.json
 vercel.json

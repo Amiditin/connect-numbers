@@ -4,14 +4,14 @@
     "airbnb",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:jsx-a11y/recommended",
-    "plugin:sonarjs/recommended",
-    "plugin:promise/recommended",
     "plugin:prettier/recommended",
+    "plugin:promise/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/recommended",
+    "plugin:sonarjs/recommended",
     "prettier"
   ],
   "plugins": [
@@ -35,7 +35,7 @@
   "rules": {
     "arrow-body-style": "off",
     "import/order": [
-      "error",
+      "warn",
       {
         "groups": [
           ["builtin", "external"],
@@ -49,25 +49,24 @@
       }
     ],
     "import/extensions": ["warn", "never"],
-    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "import/no-extraneous-dependencies": ["error", { "packageDir": "./" }],
     "import/prefer-default-export": "off",
     "jsx-a11y/click-events-have-key-events": "off",
-    "no-console": ["error", { "allow": ["warn", "error"] }],
     "linebreak-style": "off",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
     "no-param-reassign": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-use-extend-native/no-use-extend-native": "error",
     "optimize-regex/optimize-regex": "warn",
+    "prettier/prettier": ["warn", { "endOfLine": "auto" }],
     "react/function-component-definition": ["warn", { "namedComponents": "arrow-function" }],
     "react/jsx-filename-extension": "off",
     "react/jsx-props-no-spreading": "off",
     "react/jsx-wrap-multilines": ["warn", { "prop": "ignore" }],
-    "react/react-in-jsx-scope": "off",
-    "sonarjs/cognitive-complexity": ["error", 30],
-
-    "prettier/prettier": ["warn", { "endOfLine": "auto" }],
     "react/no-unstable-nested-components": ["error", { "allowAsProps": true }],
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "sonarjs/cognitive-complexity": ["error", 30]
   },
   "settings": {
     "import/resolver": {
