@@ -14,25 +14,22 @@ import type { ColumnsType } from 'antd/es/table';
 
 import styles from '../PatientProfilePage.module.scss';
 
-const sortByTime = (time1: string | null, time2: string | null) => {
-  const t1 = time1?.split(':').map((v) => +v) || [0, 0];
-  const t2 = time2?.split(':').map((v) => +v) || [0, 0];
+type TTime = IResultModel['time1'];
 
-  return t1[0] * 60 + t1[1] < t2[0] * 60 + t2[1] ? 1 : -1;
+const parseTime = (time: TTime) => (time ? dayjs.unix(+time).format('mm:ss') : null);
+
+const sortByTime = (time1: TTime, time2: TTime) => {
+  const t1 = time1 ? +time1 : 0;
+  const t2 = time2 ? +time2 : 0;
+
+  return t1 < t2 ? -1 : 1;
 };
 
-const getSumTime = (time1: string | null, time2: string | null) => {
-  const t1 = (time1 || '0:00').split(':').map((v) => +v);
-  const t2 = (time2 || '0:00').split(':').map((v) => +v);
+const getSumTime = (time1: TTime, time2: TTime) => {
+  const t1 = time1 ? +time1 : 0;
+  const t2 = time2 ? +time2 : 0;
 
-  const sum = (t1[0] + t2[0]) * 60 + t1[1] + t2[1];
-
-  const min = Math.floor(sum / 60);
-  const sec = sum % 60;
-
-  const parseTime = (num: number) => (num > 9 ? num : `0${num}`);
-
-  return `${parseTime(min)}:${parseTime(sec)}`;
+  return parseTime(String(t1 + t2));
 };
 
 const { Title, Paragraph } = Typography;
@@ -72,7 +69,7 @@ const columns: ColumnsType<IResultModel> = [
         width: '80px',
         align: 'center',
         sorter: (a, b) => sortByTime(a.time1, b.time1),
-        render: (time) => time || '—',
+        render: (_, { time1 }) => parseTime(time1) || '—',
       },
       {
         title: 'Тест 2',
@@ -81,7 +78,7 @@ const columns: ColumnsType<IResultModel> = [
         width: '80px',
         align: 'center',
         sorter: (a, b) => sortByTime(a.time2, b.time2),
-        render: (time) => time || '—',
+        render: (_, { time2 }) => parseTime(time2) || '—',
       },
       {
         title: 'Тест 3',
@@ -90,7 +87,7 @@ const columns: ColumnsType<IResultModel> = [
         width: '80px',
         align: 'center',
         sorter: (a, b) => sortByTime(a.time3, b.time3),
-        render: (time) => time || '—',
+        render: (_, { time3 }) => parseTime(time3) || '—',
       },
       {
         title: 'Тест 4',
@@ -99,7 +96,7 @@ const columns: ColumnsType<IResultModel> = [
         width: '80px',
         align: 'center',
         sorter: (a, b) => sortByTime(a.time4, b.time4),
-        render: (time) => time || '—',
+        render: (_, { time4 }) => parseTime(time4) || '—',
       },
       {
         title: 'Общее 2 и 4',

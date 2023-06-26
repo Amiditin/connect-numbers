@@ -8,7 +8,7 @@ const templateNameSlice = createSlice({
   name: 'templateName',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {},
+  extraReducers: () => undefined,
 });
 
 export const { actions: templateNameActions, reducer: templateNameReducer } = templateNameSlice;

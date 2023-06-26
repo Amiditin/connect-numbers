@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Layout, Radio, Typography } from 'antd';
+import { Button, Layout, Radio, Typography, message } from 'antd';
 import { SmileOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
@@ -34,6 +34,7 @@ const getStopwatchStatus = (testStatus: TTestStatus) => {
 };
 
 export const PatientTestPage: React.FC = () => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [lang, setLang] = useState(language.ru);
   const [result, setResult] = useState<IResultModel | null>(null);
   const [tests, setTests] = useState(connectNumbersTests);
@@ -46,21 +47,31 @@ export const PatientTestPage: React.FC = () => {
 
   useEffect(() => {
     if (tests.every((test) => test.completed) && result) {
-      try {
-        resultsService.update({
-          id: result.id,
-          dateCompleted: dayjs().format(),
-          time1: tests[0].time?.replace('.', ':'),
-          time2: tests[1].time?.replace('.', ':'),
-          time3: tests[2].time?.replace('.', ':'),
-          time4: tests[3].time?.replace('.', ':'),
-        });
-        patientsService.update({ id: result.patient.id, dateLastTest: dayjs().format() });
-      } catch (error) {
-        console.error(error);
-      }
+      (async () => {
+        try {
+          messageApi.open({ type: 'loading', content: 'Записываем результат...', duration: 0 });
+
+          await resultsService.update({
+            id: result.id,
+            dateCompleted: dayjs().format(),
+            time1: tests[0].time?.split('.')[0] || null,
+            time2: tests[1].time?.split('.')[0] || null,
+            time3: tests[2].time?.split('.')[0] || null,
+            time4: tests[3].time?.split('.')[0] || null,
+          });
+          await patientsService.update({ id: result.patient.id, dateLastTest: dayjs().format() });
+
+          messageApi.destroy();
+
+          message.success('Результат сохранен!', 2);
+        } catch (error) {
+          messageApi.destroy();
+
+          message.error('Результат не был сохранен!', 2);
+        }
+      })();
     }
-  }, [result, tests]);
+  }, [result, tests, messageApi]);
 
   useEffect(() => {
     const getResult = async (id: string) => {
@@ -84,19 +95,19 @@ export const PatientTestPage: React.FC = () => {
     }
   }, [size.width, boxRef]);
 
-  const handleTestFinish = (time: string | null) => {
-    const completedTest = tests.find((test) => !test.completed);
+  const handleTestFinish = useCallback((time: string | null) => {
+    setTests((prevTests) => {
+      const completedTest = prevTests.find((test) => !test.completed);
 
-    if (!completedTest) {
-      return;
-    }
+      if (!completedTest) {
+        return prevTests;
+      }
 
-    setTests(
-      tests.map((test) =>
+      return prevTests.map((test) =>
         test.number === completedTest.number ? { ...completedTest, completed: true, time } : test,
-      ),
-    );
-  };
+      );
+    });
+  }, []);
 
   const renderTesting = () => {
     if (!result) {
@@ -205,6 +216,7 @@ export const PatientTestPage: React.FC = () => {
   return (
     <Layout className={styles.layout}>
       <Layout.Content className={styles.content}>
+        {contextHolder}
         <Radio.Group
           className={styles.radio_lang}
           buttonStyle="solid"

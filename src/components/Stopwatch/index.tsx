@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 
 interface IStopwatchProps {
   interval: number;
@@ -6,36 +6,33 @@ interface IStopwatchProps {
   getTime: (time: string) => unknown;
 }
 
-export const Stopwatch: React.FC<IStopwatchProps> = ({ interval, status, getTime }) => {
-  const [timer, setTimer] = useState(0);
+export const Stopwatch = memo<IStopwatchProps>(function Stopwatch({ interval, status, getTime }) {
+  const [time, setTime] = useState(0);
   const timerRef = useRef<NodeJS.Timer>();
 
   useEffect(() => {
-    const handleStart = () => {
-      setTimer(0);
+    if (status === 'started') {
       timerRef.current = setInterval(() => {
-        setTimer((prevTimer) => prevTimer + interval / 1000);
+        setTime((prevTime) => prevTime + interval / 1000);
       }, interval);
-    };
-
-    const handleFinish = () => {
+    } //
+    else if (status === 'stopped') {
       clearInterval(timerRef.current);
-      getTime(timer.toFixed(1));
-    };
+      setTime((prevTime) => {
+        getTime(prevTime.toFixed(1));
 
-    switch (status) {
-      case 'started':
-        handleStart();
-        break;
-      case 'stopped':
-        handleFinish();
-        break;
-      default:
-        setTimer(0);
-        clearInterval(timerRef.current);
-        break;
+        return 0;
+      });
+    } //
+    else {
+      clearInterval(timerRef.current);
+      setTime(0);
     }
-  }, [getTime, interval, status, timer]);
 
-  return <>{timer.toFixed(1)}</>;
-};
+    return () => {
+      clearInterval(timerRef.current);
+    };
+  }, [getTime, interval, status]);
+
+  return <>{time.toFixed(1)}</>;
+});

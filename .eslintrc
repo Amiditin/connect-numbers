@@ -53,7 +53,7 @@
     "import/prefer-default-export": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "linebreak-style": "off",
-    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
     "no-param-reassign": "off",
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-use-extend-native/no-use-extend-native": "error",
